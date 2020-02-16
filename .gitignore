@@ -1,0 +1,10 @@
+// System files
+.DS_Store
+
+// Directories
+/data
+/dc
+
+// Project files
+/neo4j/create_nodes.cyp
+/dc/*.csv
