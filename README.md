@@ -24,4 +24,6 @@ Describes nodes, relationships, and the properties of each. Nodes include Users,
 
 1. Open the Neo4j browser at `http://localhost:7474` to view the graph.
 
-
+## Connecting to the database
+Once the database is running and data has been imported, connections can be made on port 7687 using a client such as py2neo for Python. Be sure to install the appropriate drivers. More info at:
+https://neo4j.com/developer/language-guides/.
