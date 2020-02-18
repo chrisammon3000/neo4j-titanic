@@ -9,10 +9,10 @@ Describes nodes, relationships, and the properties of each. Nodes include Users,
 1. Clone this repo.
 
 2. Open terminal and navigate to the project directory, then build the image by running:
-<br>```$ docker build -t popcrn-gql .```
+<br>```$ docker build -t popcrn-gql-db .```
 
 1. Next start the container in the background by running:
-<br>```$ docker run -it --publish=7474:7474 --publish=7687:7687 -d popcrn-gql```
+<br>```$ docker run -it --publish=7474:7474 --publish=7687:7687 -d popcrn-gql-db```
 
 4. Run `$ docker ps` and copy the CONTAINER ID
 
@@ -22,8 +22,8 @@ Describes nodes, relationships, and the properties of each. Nodes include Users,
 6. Once you are inside the container, use cypher-shell to load data from Google Sheets:
 <br>```$ cat import/create_db.cyp | bin/cypher-shell -u neo4j -p test```
 
-1. Open the Neo4j browser at `http://localhost:7474` to view the graph.
+1. Open the Neo4j browser at `http://localhost:7474` to view the graph. Connect clients on `bolt://localhost:7687`.
 
 ## Connecting to the database
-Once the database is running and data has been imported, connections can be made on port 7687 using a client such as py2neo for Python. Be sure to install the appropriate drivers. More info at:
+Once the database is running and data has been imported, connections can be made on port 7687 using a client such as py2neo for Python (see examples in `notebooks/` directory). Be sure to install the appropriate drivers. More info at:
 https://neo4j.com/developer/language-guides/.
