@@ -1,9 +1,11 @@
 // System files
 .DS_Store
+/notebooks/.ipynb_checkpoints
 
 // Directories
 /data
 /dc
+/api/node_modules
 
 // Project files
 /neo4j/create_nodes.cyp
