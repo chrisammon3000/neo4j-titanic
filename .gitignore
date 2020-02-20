@@ -5,8 +5,11 @@
 // Directories
 /data
 /dc
+/api/build
+/api/img
 /api/node_modules
-/api/seed
+/api/src/seed
+
 
 // Project files
 /neo4j/create_nodes.cyp
