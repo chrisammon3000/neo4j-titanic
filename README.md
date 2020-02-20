@@ -27,3 +27,40 @@ Describes nodes, relationships, and the properties of each. Nodes include Users,
 ## Connecting to the database
 Once the database is running and data has been imported, connections can be made on port 7687 using a client such as py2neo for Python (see examples in `notebooks/` directory). Be sure to install the appropriate drivers. More info at:
 https://neo4j.com/developer/language-guides/.
+
+## GraphQL API Setup
+
+More queries will be added to the API as more progress is made. To get started run:
+
+```cd api```
+
+```npm build && npm start```
+
+The GraphQL server will be available at [http://localhost:4001/graphql](http://localhost:4001/graphql). A query for the name, email and handle of the User with userId: 2 can be run as follows:
+```
+{
+  User(userId: "2"){
+    userFirstName
+    userLastName
+    userEmail
+    userHandle
+  }
+}
+```
+This returns:
+```
+{
+  "data": {
+    "User": [
+      {
+        "userFirstName": "ben",
+        "userLastName": "phics",
+        "userEmail": "ben@gmail.com",
+        "userHandle": "@ben_phics"
+      }
+    ]
+  }
+}
+```
+
+To understand more about GraphQL refer to [Introduction to GraphQL](https://graphql.org/learn/).
