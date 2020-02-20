@@ -30,13 +30,19 @@ https://neo4j.com/developer/language-guides/.
 
 ## GraphQL API Setup
 
-More queries will be added to the API as more progress is made. To get started run:
+More queries will be added to the API as more progress is made. 
+
+### Getting Started
+To get started run:
 
 ```cd api```
 
 ```npm build && npm start```
 
-The GraphQL server will be available at [http://localhost:4001/graphql](http://localhost:4001/graphql). A query for the name, email and handle of the User with userId: 2 can be run as follows:
+The GraphQL server will be available at [http://localhost:4001/graphql](http://localhost:4001/graphql). 
+
+### Example GraphQL Queries
+A query for the name, email and handle of the User with userId: 2 can be run as follows:
 ```
 {
   User(userId: "2"){
