@@ -6,8 +6,12 @@
 /data
 /dc
 /api/node_modules
+/api/seed
 
 // Project files
 /neo4j/create_nodes.cyp
 /dc/*.csv
 /api/README.md
+/api/Dockerfile
+/api/.dockerignore
+/api/
