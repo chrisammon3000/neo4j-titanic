@@ -35,7 +35,7 @@ CREATE (project:Project {
     projectName: project_line.name,
 	projectCreatedBy: '(userHandle)',
     projectDescription: project_line.description,
-    projectCreatedDate: project_line.date
+    projectCreatedDate: date()
     } )
 
 // (User)-[:WORKED_ON]->(Project)
