@@ -17,7 +17,7 @@ type Project {
   projectName: String
   projectDescription: String
   projectCreatedBy: [User!]
-  projectCreatedDate: String
+  projectCreatedDate: Date
 }
 
 type Image {
@@ -25,7 +25,7 @@ type Image {
   imageOwner: [User!]
   imageCaption: String
   imageDescription: String
-  imageCreatedDate: String
+  imageCreatedDate: Date
   imageURL: String
 }
 
@@ -33,5 +33,5 @@ type Tag {
   tagId: ID!
   tagName: String
   tagCreatedBy: String
-  tagCreatedDate: String
+  tagCreatedDate: Date
 }
