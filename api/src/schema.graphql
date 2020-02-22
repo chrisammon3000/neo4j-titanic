@@ -15,7 +15,6 @@ type User {
   userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
   userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
   userIsTagged(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:IS_TAGGED_IN]->(image:Image) RETURN image")
-
 }
 
 type Project {
@@ -24,6 +23,10 @@ type Project {
   projectDescription: String
   projectCreatedBy: [User!]
   projectCreatedDate: Date
+  projectTags(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:IS_TAGGED]->(tag:Tag) RETURN tag")
+  projectUsers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:WORKED_ON]-(user:User) RETURN user")
+  projectImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)<-[:FROM]->(image:Image) RETURN image")
+
 }
 
 type Image {
