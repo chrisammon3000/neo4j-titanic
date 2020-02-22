@@ -13,6 +13,7 @@ type User {
   userFollowers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower")
   userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project) RETURN project")
   userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
+  userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
 
 }
 
