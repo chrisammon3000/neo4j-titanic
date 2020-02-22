@@ -10,7 +10,8 @@ type User {
   userPassword: String
   userGender: String
   userSiteName: String
-  userFollowers: [User] @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower.userHandle")
+  userFollowers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower) RETURN follower")
+  userProjects(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:WORKED_ON]-(follower) RETURN follower")
 }
 
 type Project {
