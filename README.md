@@ -39,7 +39,7 @@ To get started run:
 
 ```npm build && npm start```
 
-The GraphQL server will be available at [http://localhost:4001/graphql](http://localhost:4001/graphql). 
+The GraphQL server will be available at [http://localhost:4001/graphql](http://localhost:4001/graphql). Refer to the "DOCS" tab on the right side to view all possible Queries (retrieving data) and Mutations (updating data). 
 
 ### Example GraphQL Queries
 A query for the name, email and handle of the User with userId: 2 can be run as follows:
@@ -63,6 +63,49 @@ This returns:
         "userLastName": "phics",
         "userEmail": "ben@gmail.com",
         "userHandle": "@ben_phics"
+      }
+    ]
+  }
+}
+```
+Relationships can be retrieved as follows:
+```
+{
+  User(userId: "2") {
+    userFollowers {
+      userHandle
+    }
+    userIsTagged {
+      imageURL
+    }
+  }
+}
+
+```
+This returns:
+```
+{
+  "data": {
+    "User": [
+      {
+        "userFollowers": [
+          {
+            "userHandle": "@sultan_morgan"
+          },
+          {
+            "userHandle": "@anais_morin"
+          },
+          ...
+        ],
+        "userIsTagged": [
+          {
+            "imageURL": "./amanda_styles/Projects/Branding - Blond/amanda_styles_010.jpg"
+          },
+          {
+            "imageURL": "./amanda_styles/Projects/Branding - Blond/amanda_styles_009.jpg"
+          },
+          ...
+        ]
       }
     ]
   }
