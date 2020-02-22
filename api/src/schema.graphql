@@ -14,6 +14,7 @@ type User {
   userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project) RETURN project")
   userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
   userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
+  userIsTagged(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:IS_TAGGED_IN]->(image:Image) RETURN image")
 
 }
 
