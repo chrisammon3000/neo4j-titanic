@@ -4,7 +4,9 @@
 # Run cypher-shell script that loads the data
 
 # To run:
-# docker run -it --publish=7474:7474 --publish=7687:7687 -d --env NEO4J_AUTH=neo4j/test <image tag>
+# docker run -it --publish=7474:7474 --publish=7687:7687 -d \
+# -v $HOME/neo4j/data:/data \
+# --env NEO4J_AUTH=neo4j/test <image tag>
 
 FROM neo4j:3.5.14
 #LABEL Maintainer="gclindsey@gmail.com"

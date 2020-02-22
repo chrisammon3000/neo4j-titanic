@@ -12,7 +12,7 @@ Describes nodes, relationships, and the properties of each. Nodes include Users,
 <br>```$ docker build -t popcrn-gql-db .```
 
 1. Next start the container in the background by running:
-<br>```$ docker run -it --publish=7474:7474 --publish=7687:7687 -d popcrn-gql-db```
+<br>```$ docker run -it --publish=7474:7474 -v $HOME/neo4j/data:/data --publish=7687:7687 -d popcrn-gql-db```
 
 4. Run `$ docker ps` and copy the CONTAINER ID
 
