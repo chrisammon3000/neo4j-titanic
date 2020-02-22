@@ -11,6 +11,8 @@ type User {
   userGender: String
   userSiteName: String
   userFollowers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower")
+  userFollows(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(follower:User) RETURN follower")
+  userFriends(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]->(follower:User) RETURN follower") 
   userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project) RETURN project")
   userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
   userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
@@ -39,7 +41,6 @@ type Image {
   imageTags(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:IS_TAGGED]->(tag:Tag) RETURN tag")
   imageCreator(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:CREATED]-(user:User) RETURN user")
   imageTaggedUsers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:IS_TAGGED_IN]-(user:User) RETURN user")
-
 }
 
 type Tag {
@@ -47,4 +48,5 @@ type Tag {
   tagName: String
   tagCreatedBy: String
   tagCreatedDate: Date
+
 }
