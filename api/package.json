@@ -11,7 +11,7 @@
     "start": "npm run build && node build/index.js",
     "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
   },
-  "author": "William Lyon",
+  "author": "Gregory Lindsey",
   "license": "MIT",
   "dependencies": {
     "apollo-boost": "^0.3.1",

@@ -9,6 +9,7 @@
 /api/img
 /api/node_modules
 /api/src/seed
+/aws
 
 
 // Project files
@@ -18,3 +19,4 @@
 /api/Dockerfile
 /api/.dockerignore
 /api/
+*.pem
