@@ -1,7 +1,7 @@
 {
-  "name": "grand-stack-starter-api",
+  "name": "popcrn-gql",
   "version": "0.0.1",
-  "description": "API app for GRANDstack",
+  "description": "GraphQL enabled API backed by Neo4j",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
