@@ -4,19 +4,14 @@
 
 // Directories
 /data
-/dc
 /api/build
-/api/img
 /api/node_modules
-/api/src/seed
 /aws
 
 
 // Project files
-/neo4j/create_nodes.cyp
-/dc/*.csv
 /api/README.md
-/api/Dockerfile
-/api/.dockerignore
+# /api/Dockerfile
+# /api/.dockerignore
 /api/
 *.pem
