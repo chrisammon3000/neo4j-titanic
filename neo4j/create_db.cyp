@@ -9,6 +9,7 @@ CREATE (user:User {
 	userSiteName:profile_line.SiteName,
     userFirstName: profile_line.FirstName,
     userLastName: profile_line.LastName,
+    userFullName: profile_line.FirstName + profile_line.LastName,
     userEmail: profile_line.email,
     userPassword: profile_line.password,
     userGender: profile_line.Gender,
@@ -144,15 +145,7 @@ WITH user, image_URL
 MATCH (image:Image { imageURL: image_URL })
 CREATE(user)-[rel:IS_TAGGED_IN]->(image)
 SET rel.userTaggedDate = date(), rel.taggedByUser = '(userHandle)';
-
 // User LIKES Image
-// data not available
-
 // User LIKES Project
-// data not available
-
 // User FOLLOWS Project, Tag
-// data not available
-
 // Constraints
-
