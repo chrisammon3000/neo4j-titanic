@@ -113,13 +113,12 @@ This returns:
 ```
 ### Using the `curl` with GraphQL
 To query the GraphQL endpoint from the command line, use the curl utility. For example, to query the followers of a particular user, paste in the GraphQL URI and run:
-```
-curl -X POST -H "Content-Type: application/json" --data \
-'{ "query": "{ User (userId: 1) { userFollowers { userHandle } } }" }' <URI>
-```
-Result:
-```
-{"data":{"User":[{"userFollowers":[{"userHandle":"@ben_phics"},{"userHandle":"@tyreece_santiago"},{"userHandle":"@ephraim_rivas"}]}]}}
-```
+
+<br>```curl -X POST -H "Content-Type: application/json" --data \
+'{ "query": "{ User (userId: 1) { userFollowers { userHandle } } }" }' <URI>```
+<br>Result:
+
+<br>```{"data":{"User":[{"userFollowers":[{"userHandle":"@ben_phics"},{"userHandle":"@tyreece_santiago"},{"userHandle":"@ephraim_rivas"}]}]}}```
+<br>
 
 To understand more about GraphQL refer to [Introduction to GraphQL](https://graphql.org/learn/).
