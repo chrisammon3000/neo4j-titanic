@@ -5,7 +5,7 @@ LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
 CREATE (user:User { 
     userId: profile_line.userId,
-    userHandle: profile_line.userHandle),
+    userHandle: profile_line.userHandle,
 	userSiteName:profile_line.userSiteName,
     userFirstName: profile_line.userFirstName,
     userLastName: profile_line.userLastName,
@@ -14,10 +14,10 @@ CREATE (user:User {
     userPassword: profile_line.userPassword,
     userGender: profile_line.userGender,
     userRating: profile_line.userRating,
-    userRole: profile_line.userRole,
+    userRoles: split(profile_line.userRoles, ','),
     userBio: profile_line.userBio,
-    userSkills: profile_line.userSkills,
-    userClients: profile_line.userClients,
+    userSkills: split(profile_line.userSkills, ','),
+    userClients: split(profile_line.userClients, ','),
     userLocation: profile_line.userLocation,
     userWebsite: profile_line.userWebsite,
     userProfile_FG: profile_line.userProfile_FG,
@@ -25,14 +25,15 @@ CREATE (user:User {
     } )
 
 // (User)-[:FOLLOWS]->(User)
-WITH profile_line, split(profile_line.following_users, ',') AS followers
+WITH profile_line, split(profile_line.userFollowers, ',') AS followers
 UNWIND followers AS follower
-MERGE (user:User { userHandle: '@'+profile_line.handle })
+MERGE (user:User { userHandle: profile_line.userHandle })
 WITH user, follower
 MATCH (f:User { userHandle: follower })
 CREATE (f)-[r:FOLLOWS]->(user)
-SET r.followedDate = date(), r.followedType = 'USER';
+SET r.followedDate = date(), r.followedType = 'USER'
 
+// PICKUP HERE
 // Create Project nodes
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
