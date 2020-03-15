@@ -1,21 +1,27 @@
 // Full Query
 
-// Create User nodes
+// User
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=1801331028' AS profile_line
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
 CREATE (user:User { 
-    userId: profile_line.User,
-    userHandle: '@' + trim(profile_line.handle),
-	userSiteName:profile_line.SiteName,
-    userFirstName: profile_line.FirstName,
-    userLastName: profile_line.LastName,
-    userFullName: profile_line.FirstName + profile_line.LastName,
-    userEmail: profile_line.email,
-    userPassword: profile_line.password,
-    userGender: profile_line.Gender,
-    userBio: profile_line.experience,
-    userProfile_FG: profile_line.profile_fg,
-    userProfile_BG: profile_line.profile_bg 
+    userId: profile_line.userId,
+    userHandle: profile_line.userHandle),
+	userSiteName:profile_line.userSiteName,
+    userFirstName: profile_line.userFirstName,
+    userLastName: profile_line.userLastName,
+    userFullName: profile_line.userFirstName + " " + profile_line.userLastName,
+    userEmail: profile_line.userEmail,
+    userPassword: profile_line.userPassword,
+    userGender: profile_line.userGender,
+    userRating: profile_line.userRating,
+    userRole: profile_line.userRole,
+    userBio: profile_line.userBio,
+    userSkills: profile_line.userSkills,
+    userClients: profile_line.userClients,
+    userLocation: profile_line.userLocation,
+    userWebsite: profile_line.userWebsite,
+    userProfile_FG: profile_line.userProfile_FG,
+    userProfile_BG: profile_line.userProfile_BG 
     } )
 
 // (User)-[:FOLLOWS]->(User)
