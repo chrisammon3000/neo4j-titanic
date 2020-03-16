@@ -37,19 +37,19 @@ SET r.followedDate = date(), r.followedType = 'USER'
 // Create Project nodes
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=276470380' AS project_line
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
 CREATE (project:Project { 
-    projectId: project_line.projectid,
-    projectName: project_line.name,
-	projectCreatedBy: '(userHandle)',
-    projectDescription: project_line.description,
-    projectCreatedDate: date()
+    projectId: project_line.projectId,
+    projectName: project_line.projectName,
+	projectCreator: project_line.projectCreator,
+    projectDescription: project_line.projectDescription,
+    projectCreatedDate: project_line.projectCreatedDate
     } )
 
 // (User)-[:WORKED_ON]->(Project)
 WITH project_line, 
-	split(trim(project_line.users), ',') AS collaborators, 
-    project_line.projectid AS project_Id
+	split(trim(project_line.projectCollaborator), ',') AS collaborators, 
+    project_line.projectId AS project_Id
 UNWIND collaborators AS collaborator
 MATCH (user:User { userHandle: collaborator} )
 WITH user, project_Id
@@ -57,6 +57,10 @@ MATCH (project:Project { projectId: project_Id })
 CREATE (user)-[rel:WORKED_ON]->(project)
 SET rel.workedOnDate = date(), 
 	rel.userRoles = ['role 1', 'role 2'];
+
+// (User)-[:FOLLOWS]->(Project)
+
+
 
 // Create Image & Tag nodes
 WITH max(1) AS dummy
@@ -107,7 +111,7 @@ CREATE (user)-[r:CREATED]->(image) SET r.createdDate = date(), r.createdType = '
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=1801331028' AS profile_line
 WITH '@'+profile_line.handle AS user_handle, 
-    split(profile_line.interests_tags, ',') AS interests
+    split(profile_line.tagName, ',') AS interests
 UNWIND interests AS interest
 MATCH (user:User { userHandle: user_handle })
 WITH user, interest
