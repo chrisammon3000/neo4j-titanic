@@ -59,7 +59,15 @@ SET rel.workedOnDate = date(),
 	rel.userRoles = ['role 1', 'role 2'];
 
 // (User)-[:FOLLOWS]->(Project)
-
+WITH project_line,
+    split(project_line.projectFollowers) as followers,
+    project_line.projectId as project_Id
+UNWIND followers as follower
+MATCH (user:User { userHandle: follower } )
+WITH user, project_Id
+MATCH (project:Project { projectId: project_Id } )
+CREATE (user)-[rel:FOLLOWS]->(project)
+SET rel.followedDate = date()
 
 
 // Create Image & Tag nodes
