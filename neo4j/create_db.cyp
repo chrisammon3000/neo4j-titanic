@@ -85,7 +85,7 @@ CREATE (image:Image {
     } )
 
 // Tag nodes
-WITH image_line, split(image_line.tags, ',') AS tagnames
+WITH image_line, split(image_line.tagName, ',') AS tagnames
 UNWIND tagnames AS tagname
 WITH DISTINCT tagname AS tag_node
 CREATE (tag:Tag { 
