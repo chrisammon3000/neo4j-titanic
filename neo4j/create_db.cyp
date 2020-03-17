@@ -142,8 +142,8 @@ SET rel.projectTaggedDate = date(),
 // (Image)-[:IS_TAGGED]->(Tag)
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=0' AS image_line
-WITH image_line.url AS image_URL, split(image_line.tags, ',') AS image_tags
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
+WITH image_line.imageURL AS image_URL, split(image_line.tagName, ',') AS image_tags
 UNWIND image_tags AS image_tag
 MATCH (image:Image { imageURL: image_URL })
 WITH image, image_tag
