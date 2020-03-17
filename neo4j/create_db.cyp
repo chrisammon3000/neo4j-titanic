@@ -129,8 +129,8 @@ SET r.followedDate = date(), r.followedType = 'TAG';
 
 // (Project)-[:IS_TAGGED]->(Tag)
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=276470380' AS project_line
-WITH split(project_line.tags, ',') AS project_tags, project_line.projectid AS project_Id
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
+WITH split(project_line.tagName, ',') AS project_tags, project_line.projectId AS project_Id
 UNWIND project_tags AS project_tag
 MATCH (project:Project { projectId: project_Id })
 WITH project, project_tag
