@@ -98,8 +98,9 @@ CREATE (tag:Tag {
 // (Image)-[:FROM]->(Project) - there is no project for the value 'Display' in media.csv
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=0' AS image_line
-WITH image_line, image_line.projectid AS project_Id, image_line.url AS image_URL
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
+
+WITH image_line, image_line.projectId AS project_Id, image_line.imageURL AS image_URL
 MATCH (image:Image { imageURL: image_URL })
 WITH image, project_Id
 MATCH (project:Project { projectId: project_Id })
