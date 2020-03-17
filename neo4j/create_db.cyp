@@ -99,7 +99,6 @@ CREATE (tag:Tag {
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
-
 WITH image_line, image_line.projectId AS project_Id, image_line.imageURL AS image_URL
 MATCH (image:Image { imageURL: image_URL })
 WITH image, project_Id
