@@ -33,7 +33,6 @@ MATCH (f:User { userHandle: follower })
 CREATE (f)-[r:FOLLOWS]->(user)
 SET r.followedDate = date(), r.followedType = 'USER'
 
-// PICKUP HERE
 // Create Project nodes
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
@@ -69,20 +68,20 @@ MATCH (project:Project { projectId: project_Id } )
 CREATE (user)-[rel:FOLLOWS]->(project)
 SET rel.followedDate = date()
 
-
+// PICKUP HERE
 // Create Image & Tag nodes
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=0' AS image_line
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 
 // Image nodes
 CREATE (image:Image { 
     imageId: '(imageId)',
-    imageOwner: '@'+image_line.owner,
+    imageOwner: image_line.imageOwner,
 	imageCreatedDate: date(),
     imageCaption: '(caption)',
     imageDescription: '(description)',
-    imageURL: image_line.url
+    imageURL: image_line.imageURL
     } )
 
 // Tag nodes
