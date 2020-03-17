@@ -3,12 +3,12 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 CREATE (user:User { 
     userId: profile_line.userId,
     userHandle: profile_line.userHandle,
-	userSiteName:profile_line.userSiteName,
-    userFirstName: profile_line.userFirstName,
-    userLastName: profile_line.userLastName,
+	userSiteName: trim(profile_line.userSiteName),
+    userFirstName: trim(profile_line.userFirstName),
+    userLastName: trim(profile_line.userLastName),
     userFullName: profile_line.userFirstName + " " + profile_line.userLastName,
     userEmail: profile_line.userEmail,
-    userPassword: profile_line.userPassword,
+    userPassword: trim(profile_line.userPassword) + "123",
     userGender: profile_line.userGender,
     userRating: profile_line.userRating,
     userRoles: split(profile_line.userRoles, ','),
@@ -34,7 +34,7 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 CREATE (project:Project { 
     projectId: project_line.projectId,
     projectName: project_line.projectName,
-	projectCreator: project_line.projectCreator,
+	projectCreator: split(project_line.projectCreators, ','),
     projectDescription: project_line.projectDescription,
     projectCreatedDate: project_line.projectCreatedDate
     } )
