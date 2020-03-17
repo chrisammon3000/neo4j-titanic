@@ -156,8 +156,8 @@ SET rel.imageTaggedDate = date(),
 // (User)-[:IS_TAGGED_IN]->(Image)
 WITH max(1) AS dummy
 LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0/export?format=csv&id=1LpluS0A4aPHeftGW3R6tyCRHqc3czRVxzogXrWMI3o0&gid=0' AS image_line
-WITH split(image_line.users, ',') AS user_handles, image_line.url AS image_URL
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
+WITH split(image_line.taggedUser, ',') AS user_handles, image_line.imageURL AS image_URL
 UNWIND user_handles AS user_handle
 MATCH (user:User { userHandle: user_handle})
 WITH user, image_URL
