@@ -16,3 +16,4 @@
 /api/
 *.pem
 docker-compose.yml
+load_db.py
