@@ -25,7 +25,7 @@ You will need:
 4. Create a network:<br> ```docker network create -d bridge popcrn-net```
    
 5. Start the database container by running:<br>
-   ```docker run --name db -d -p 7474:7474 -p 7687:7687 --network popcrn-net gclindsey/popcrn-api:db```
+   ```docker run --name db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 --network popcrn-net gclindsey/popcrn-api:db```
 
 6. Open Neo4j in the browser at (`http://<EC2_PUBLIC_IP>:7474`) to interact with Neo4j.
 
