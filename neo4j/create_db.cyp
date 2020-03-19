@@ -28,6 +28,9 @@ WITH user, follower
 MATCH (f:User { userHandle: follower })
 CREATE (f)-[r:FOLLOWS]->(user)
 SET r.followedDate = date(), r.followedType = 'USER';
+
+WITH profile_line, 
+
 WITH max(1) AS dummy // Project nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
