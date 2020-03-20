@@ -48,7 +48,6 @@ type Image {
   imageURL: String
   imageProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name:"FROM", direction: OUT)
   imageTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name:"IS_TAGGED", direction: OUT)
-  imageCreator(first: Int = 3, offset: Int = 0): [User] @relation(name:"CREATED", direction:IN)
   imageTaggedUsers(first: Int = 3, offset: Int = 0): [User] @relation(name:"IS_TAGGED_IN", direction:IN)
 }
 
