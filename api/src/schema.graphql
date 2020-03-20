@@ -57,7 +57,7 @@ type Tag {
   tagName: String
   tagCreatedBy: String
   tagCreatedDate: Date
-  tagFollowers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(user:User) RETURN user")
-  tagProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)<-[:IS_TAGGED]-(project:Project) RETURN project")
-  tagImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)<-[:IS_TAGGED]-(image:Image) RETURN image")
+  tagFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name:"FOLLOWS", direction:IN)
+  tagProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name:"IS_TAGGED", direction:IN)
+  tagImages(first: Int = 3, offset: Int = 0): [Image] @relation(name:"IS_TAGGED", direction:IN)
 }
