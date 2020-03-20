@@ -1,5 +1,4 @@
 type User {
-  userId: ID!
   userHandle: String!
   userFirstName: String
   userLastName: String
@@ -40,6 +39,8 @@ type Project {
   projectImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "FROM", direction: IN)
 }
 
+/* Resume here */
+  
 type Image {
   imageId: ID!
   imageOwner: [User!]

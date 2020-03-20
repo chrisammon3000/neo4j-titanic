@@ -1,7 +1,6 @@
 LOAD CSV WITH HEADERS // User
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
-CREATE (user:User { 
-    userId: profile_line.userId,
+CREATE (user:User {
     userHandle: profile_line.userHandle,
 	userSiteName: trim(profile_line.userSiteName),
     userFirstName: trim(profile_line.userFirstName),
