@@ -43,7 +43,7 @@ CREATE (project:Project {
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 
-    project_line.projectId AS project_Id // (User)-[:WORKED_ON]->(Project)
+    project_line.projectId AS project_Id // (User)-[:COLLABORATED_ON]->(Project)
 UNWIND collaborators AS collaborator
 MATCH (user:User { userHandle: collaborator} )
 WITH user, project_Id
