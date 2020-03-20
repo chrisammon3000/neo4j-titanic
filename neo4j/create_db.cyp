@@ -69,7 +69,7 @@ WITH max(1) AS dummy  // Create Image & Tag nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
-    imageId: '(imageId)',
+    imageId: image_line.imageId,
     imageOwner: image_line.imageOwner,
 	imageCreatedDate: date(),
     imageCaption: '(caption)',
