@@ -35,9 +35,10 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 CREATE (project:Project { 
     projectId: project_line.projectId,
     projectName: project_line.projectName,
-	projectCreator: split(project_line.projectCreators, ','),
+	projectCreators: split(project_line.projectCreators, ','),
     projectDescription: project_line.projectDescription,
-    projectCreatedDate: project_line.projectCreatedDate
+    projectCreatedDate: project_line.projectCreatedDate,
+    projectCollaborators: split(project_line.projectCollaborators, ',')
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 
@@ -74,7 +75,7 @@ CREATE (image:Image {
     imageDescription: '(description)',
     imageURL: image_line.imageURL
     } )
-WITH image_line, split(image_line.tagNames, ',') AS tagnames // Tag nodes
+WITH image_line, split(image_line.imageTagNames, ',') AS tagnames // Tag nodes
 UNWIND tagnames AS tagname
 WITH DISTINCT tagname AS tag_node
 CREATE (tag:Tag { 
@@ -115,7 +116,7 @@ SET r.followedDate = date(), r.followedType = 'TAG';
 WITH max(1) AS dummy // (Project)-[:IS_TAGGED]->(Tag)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
-WITH split(project_line.tagNames, ',') AS project_tags, project_line.projectId AS project_Id
+WITH split(project_line.projectTagNames, ',') AS project_tags, project_line.projectId AS project_Id
 UNWIND project_tags AS project_tag
 MATCH (project:Project { projectId: project_Id })
 WITH project, project_tag
@@ -136,7 +137,7 @@ CREATE (image)-[rel:IS_TAGGED]->(tag)
 SET rel.imageTaggedDate = date(), 
 	rel.taggedByUser = 'userHandle',
     rel.tagType = 'IMAGE';
-    
+
 WITH max(1) AS dummy // (User)-[:IS_TAGGED_IN]->(Image)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
