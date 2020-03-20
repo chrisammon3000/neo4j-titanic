@@ -81,7 +81,7 @@ LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
     imageId: image_line.imageId,
-    imageOwner: image_line.imageOwner,
+    imageCreator: image_line.imageCreator,
 	imageCreatedDate: date(),
     imageCaption: '(caption)',
     imageDescription: '(description)',

@@ -41,7 +41,7 @@ type Project {
   
 type Image {
   imageId: ID!
-  imageOwner: String
+  imageCreator: String
   imageCaption: String
   imageDescription: String
   imageCreatedDate: Date
