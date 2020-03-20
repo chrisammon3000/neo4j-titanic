@@ -35,20 +35,22 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 CREATE (project:Project { 
     projectId: project_line.projectId,
     projectName: project_line.projectName,
-	projectCreators: split(project_line.projectCreators, ','),
+	projectCreator: project_line.projectCreator,
     projectDescription: project_line.projectDescription,
-    projectCreatedDate: project_line.projectCreatedDate
+    projectCreatedDate: project_line.projectCreatedDate,
+    projectCollaborators: split(project_line.projectCollaborators, ','),
+    projectTagNames: split(project_line.projectTagNames, ',')
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 
-    project_line.projectId AS project_Id // (User)-[:WORKED_ON]->(Project)
+    project_line.projectId AS project_Id // (User)-[:COLLABORATED_ON]->(Project)
 UNWIND collaborators AS collaborator
 MATCH (user:User { userHandle: collaborator} )
 WITH user, project_Id
 MATCH (project:Project { projectId: project_Id })
-CREATE (user)-[rel:WORKED_ON]->(project)
+CREATE (user)-[rel:COLLABORATED_ON]->(project)
 SET rel.workedOnDate = date(), 
-	rel.userRoles = ['role 1', 'role 2'];
+	rel.userRoles = split("userRole 1, userRole 2", ',');
 
 WITH max(1) AS dummy // (User)-[:FOLLOWS]->(Project)
 LOAD CSV WITH HEADERS
@@ -63,31 +65,19 @@ MATCH (project:Project { projectId: project_Id } )
 CREATE (user)-[rel:FOLLOWS]->(project)
 SET rel.followedDate = date(), rel.followedType = 'PROJECT';
 
-WITH max(1) AS dummy // (User)-[:CREATED]->(Project)
-LOAD CSV WITH HEADERS
-FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
-WITH project_line,
-    split(project_line.projectCreators, ',') as creators,
-    project_line.projectId as project_Id
-UNWIND creators as creator
-MATCH (user:User { userHandle: creator } )
-WITH user, project_Id
-MATCH (project:Project { projectId: project_Id } )
-CREATE (user)-[rel:CREATED]->(project)
-SET rel.createdDate = date(), rel.createdType = 'PROJECT';
-
-WITH max(1) AS dummy  // Image nodes
+WITH max(1) AS dummy  // Create Image & Tag nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
-    imageId: '(imageId)',
+    imageId: image_line.imageId,
     imageOwner: image_line.imageOwner,
 	imageCreatedDate: date(),
     imageCaption: '(caption)',
     imageDescription: '(description)',
-    imageURL: image_line.imageURL
+    imageURL: image_line.imageURL,
+    imageTagNames: split(image_line.imageTagNames, ','),
+    imageTaggedUsers: split(image_line.imageTaggedUsers, ',')
     } )
-
 WITH image_line, split(image_line.imageTagNames, ',') AS tagnames // Tag nodes
 UNWIND tagnames AS tagname
 WITH DISTINCT tagname AS tag_node
@@ -97,7 +87,6 @@ CREATE (tag:Tag {
 	tagCreatedDate: date(),
     tagCreatedBy: '(userHandle)'
     } );
-    
 WITH max(1) AS dummy // (Image)-[:FROM]->(Project) - there is no project for the value 'Display' in media.csv
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
@@ -112,10 +101,7 @@ MATCH (user:User)
 WITH user
 MATCH (image:Image)
 WHERE user.userHandle = image.imageOwner
-CREATE (user)-[r:CREATED]->(image) 
-SET r.createdDate = date(), r.createdType = 'IMAGE';
-
-
+CREATE (user)-[r:CREATED]->(image) SET r.createdDate = date(), r.createdType = 'IMAGE';
 
 WITH max(1) AS dummy // (User)-[:FOLLOWS]->(Tag)
 LOAD CSV WITH HEADERS
@@ -128,6 +114,7 @@ WITH user, interest
 MATCH (tag:Tag { tagName: interest })
 CREATE (user)-[r:FOLLOWS]->(tag)
 SET r.followedDate = date(), r.followedType = 'TAG';
+
 WITH max(1) AS dummy // (Project)-[:IS_TAGGED]->(Tag)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
@@ -139,6 +126,7 @@ MATCH (tag:Tag { tagName: project_tag })
 CREATE (project)-[rel:IS_TAGGED]->(tag) 
 SET rel.projectTaggedDate = date(), 
 	rel.taggedByUser = '(userHandle)';
+
 WITH max(1) AS dummy // (Image)-[:IS_TAGGED]->(Tag)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
@@ -151,10 +139,11 @@ CREATE (image)-[rel:IS_TAGGED]->(tag)
 SET rel.imageTaggedDate = date(), 
 	rel.taggedByUser = 'userHandle',
     rel.tagType = 'IMAGE';
+
 WITH max(1) AS dummy // (User)-[:IS_TAGGED_IN]->(Image)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
-WITH split(image_line.taggedUser, ',') AS user_handles, image_line.imageURL AS image_URL
+WITH split(image_line.imageTaggedUsers, ',') AS user_handles, image_line.imageURL AS image_URL
 UNWIND user_handles AS user_handle
 MATCH (user:User { userHandle: user_handle})
 WITH user, image_URL
