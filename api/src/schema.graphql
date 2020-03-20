@@ -31,11 +31,13 @@ type Project {
   projectId: ID!
   projectName: String
   projectDescription: String
-  projectCreators: [User!]
+  projectCreator: String
   projectCreatedDate: Date
-  projectTags(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:IS_TAGGED]->(tag:Tag) RETURN tag")
-  projectCollaborators(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:WORKED_ON]-(user:User) RETURN user")
-  projectImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)<-[:FROM]-(image:Image) RETURN image")
+  projectTagNames: [String]
+  projectTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "IS_TAGGED", direction: OUT)
+  projectCollaborators(first: Int = 3, offset: Int = 0): [User] @relation(name: "COLLABORATED_ON", direction: IN)
+  projectFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
+  projectImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "FROM", direction: IN)
 }
 
 type Image {
