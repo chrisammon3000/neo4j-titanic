@@ -38,20 +38,18 @@ type Project {
   projectFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
   projectImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "FROM", direction: IN)
 }
-
-/* Resume here */
   
 type Image {
   imageId: ID!
-  imageOwner: [User!]
+  imageOwner: String
   imageCaption: String
   imageDescription: String
   imageCreatedDate: Date
   imageURL: String
-  imageProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:FROM]->(project:Project) RETURN project")
-  imageTags(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:IS_TAGGED]->(tag:Tag) RETURN tag")
-  imageCreator(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:CREATED]-(user:User) RETURN user")
-  imageTaggedUsers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:IS_TAGGED_IN]-(user:User) RETURN user")
+  imageProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name:"FROM", direction: OUT)
+  imageTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name:"IS_TAGGED", direction: OUT)
+  imageCreator(first: Int = 3, offset: Int = 0): [User] @relation(name:"CREATED", direction:IN)
+  imageTaggedUsers(first: Int = 3, offset: Int = 0): [User] @relation(name:"IS_TAGGED_IN", direction:IN)
 }
 
 type Tag {
