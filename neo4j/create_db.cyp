@@ -75,7 +75,8 @@ CREATE (image:Image {
     imageCaption: '(caption)',
     imageDescription: '(description)',
     imageURL: image_line.imageURL,
-    
+    imageTagNames: split(image_line.imageTagNames, ','),
+    imageTaggedUsers: split(image_line.imageTaggedUsers, ',')
     } )
 WITH image_line, split(image_line.imageTagNames, ',') AS tagnames // Tag nodes
 UNWIND tagnames AS tagname
@@ -143,7 +144,7 @@ SET rel.imageTaggedDate = date(),
 WITH max(1) AS dummy // (User)-[:IS_TAGGED_IN]->(Image)
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
-WITH split(image_line.taggedUser, ',') AS user_handles, image_line.imageURL AS image_URL
+WITH split(image_line.imageTaggedUsers, ',') AS user_handles, image_line.imageURL AS image_URL
 UNWIND user_handles AS user_handle
 MATCH (user:User { userHandle: user_handle})
 WITH user, image_URL
