@@ -3,6 +3,7 @@ type User {
   userHandle: String!
   userFirstName: String
   userLastName: String
+  userFullName: String
   userBio: String
   userProfile_BG: String
   userProfile_FG: String
@@ -10,11 +11,22 @@ type User {
   userPassword: String
   userGender: String
   userSiteName: String
-  userFollowers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower")
+  userWebsite: String
+  userRating: Float
+  userRoles: [String]
+  userSkills: [String]
+  userClients: [String]
+  userLocation: String
+  userInterestTags: [String]
+  userFollowersCypher(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower")
+  userFollowersRelation(first: Int = 3, offset: Int = 0): [User] @relation(name:"FOLLOWS", direction: IN)
   userFollows(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(follower:User) RETURN follower")
   userFriends(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]->(follower:User) RETURN follower") 
-  userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project) RETURN project")
+  userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:CREATED]->(project:Project) RETURN project")
+  userCollaborations(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project:Project) RETURN project")  
   userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
+  userInterestsRel(first: Int = 3, offset: Int = 0): [Tag] @relation(name:"FOLLOWS", direction: OUT)
+
   userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
   userIsTagged(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:IS_TAGGED_IN]->(image:Image) RETURN image")
 }
@@ -23,10 +35,10 @@ type Project {
   projectId: ID!
   projectName: String
   projectDescription: String
-  projectCreatedBy: [User!]
+  projectCreators: [User!]
   projectCreatedDate: Date
   projectTags(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:IS_TAGGED]->(tag:Tag) RETURN tag")
-  projectUsers(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:WORKED_ON]-(user:User) RETURN user")
+  projectCollaborators(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:WORKED_ON]-(user:User) RETURN user")
   projectImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)<-[:FROM]-(image:Image) RETURN image")
 }
 
