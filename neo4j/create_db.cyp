@@ -39,7 +39,8 @@ CREATE (project:Project {
     projectDescription: project_line.projectDescription,
     projectCreatedDate: project_line.projectCreatedDate,
     projectCollaborators: split(project_line.projectCollaborators, ','),
-    projectFollowers: split(project_line.projectFollowers, ',')
+    projectFollowers: split(project_line.projectFollowers, ','),
+    projectTagNames: split(project_line.projectTagNames, ',')
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 
