@@ -35,10 +35,11 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 CREATE (project:Project { 
     projectId: project_line.projectId,
     projectName: project_line.projectName,
-	projectCreators: split(project_line.projectCreators, ','),
+	projectCreator: project_line.projectCreator,
     projectDescription: project_line.projectDescription,
     projectCreatedDate: project_line.projectCreatedDate,
-    projectCollaborators: split(project_line.projectCollaborators, ',')
+    projectCollaborators: split(project_line.projectCollaborators, ','),
+    projectFollowers: split(project_line.projectFollowers, ',')
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 
@@ -47,9 +48,9 @@ UNWIND collaborators AS collaborator
 MATCH (user:User { userHandle: collaborator} )
 WITH user, project_Id
 MATCH (project:Project { projectId: project_Id })
-CREATE (user)-[rel:WORKED_ON]->(project)
+CREATE (user)-[rel:COLLABORATED_ON]->(project)
 SET rel.workedOnDate = date(), 
-	rel.userRoles = ['role 1', 'role 2'];
+	rel.userRoles = split("'role 1', 'role 2'", ',');
 
 WITH max(1) AS dummy // (User)-[:FOLLOWS]->(Project)
 LOAD CSV WITH HEADERS
