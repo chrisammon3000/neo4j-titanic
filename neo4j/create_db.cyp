@@ -65,7 +65,19 @@ MATCH (project:Project { projectId: project_Id } )
 CREATE (user)-[rel:FOLLOWS]->(project)
 SET rel.followedDate = date(), rel.followedType = 'PROJECT';
 
-WITH max(1) AS dummy  // Create Image & Tag nodes
+WITH max(1) AS dummy // (User)-[:CREATED]->(Project)
+LOAD CSV WITH HEADERS
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
+WITH project_line, 
+    project_line.projectCreator as project_creator,
+    project_line.projectId as project_Id
+MATCH (user:User { userHandle: project_creator } )
+WITH user, project_Id
+MATCH (project:Project { projectId: project_Id } )
+CREATE (user)-[rel:CREATED]->(project)
+SET rel.createdDate = date(), rel.createdType = 'PROJECT';
+
+WITH max(1) AS dummy  // Image nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
