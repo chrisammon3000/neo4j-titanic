@@ -18,17 +18,13 @@ type User {
   userClients: [String]
   userLocation: String
   userInterestTags: [String]
-  userFollowersCypher(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]-(follower:User) RETURN follower")
-  userFollowersRelation(first: Int = 3, offset: Int = 0): [User] @relation(name:"FOLLOWS", direction: IN)
-  userFollows(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(follower:User) RETURN follower")
-  userFriends(first: Int = 3, offset: Int = 0): [User] @cypher(statement:"MATCH (this)<-[:FOLLOWS]->(follower:User) RETURN follower") 
-  userProjects(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:CREATED]->(project:Project) RETURN project")
-  userCollaborations(first: Int = 3, offset: Int = 0): [Project] @cypher(statement:"MATCH (this)-[:WORKED_ON]->(project:Project) RETURN project")  
-  userInterests(first: Int = 3, offset: Int = 0): [Tag] @cypher(statement:"MATCH (this)-[:FOLLOWS]->(tag:Tag) RETURN tag")
-  userInterestsRel(first: Int = 3, offset: Int = 0): [Tag] @relation(name:"FOLLOWS", direction: OUT)
-
-  userImages(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:CREATED]->(image:Image) RETURN image")
-  userIsTagged(first: Int = 3, offset: Int = 0): [Image] @cypher(statement:"MATCH (this)-[:IS_TAGGED_IN]->(image:Image) RETURN image")
+  userFollows(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: OUT)
+  userFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
+  userProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name: "CREATED", direction: OUT)
+  userCollaborations(first: Int = 3, offset: Int = 0): [Project] @relation(name: "COLLABORATED_ON", direction: OUT)
+  userInterests(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "FOLLOWS", direction: OUT)
+  userImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "CREATED", direction: OUT)
+  userIsTagged(first: Int = 3, offset: Int = 0): [Image] @relation(name: "IS_TAGGED_IN", direction: OUT)
 }
 
 type Project {
