@@ -50,7 +50,7 @@ WITH user, project_Id
 MATCH (project:Project { projectId: project_Id })
 CREATE (user)-[rel:COLLABORATED_ON]->(project)
 SET rel.workedOnDate = date(), 
-	rel.userRoles = split("'role 1', 'role 2'", ',');
+	rel.userRoles = split("userRole 1, userRole 2", ',');
 
 WITH max(1) AS dummy // (User)-[:FOLLOWS]->(Project)
 LOAD CSV WITH HEADERS
