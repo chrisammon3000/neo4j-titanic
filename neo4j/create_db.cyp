@@ -74,7 +74,8 @@ CREATE (image:Image {
 	imageCreatedDate: date(),
     imageCaption: '(caption)',
     imageDescription: '(description)',
-    imageURL: image_line.imageURL
+    imageURL: image_line.imageURL,
+    
     } )
 WITH image_line, split(image_line.imageTagNames, ',') AS tagnames // Tag nodes
 UNWIND tagnames AS tagname
