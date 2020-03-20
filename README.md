@@ -37,7 +37,7 @@ You will need:
 ## Starting the GraphQL server
    
 1. Run the command:
-   ```docker run --name api -d -p 4001:4001 --network popcrn-net gclindsey/popcrn-api:api```
+   ```docker run --name api -d -p 4001:4001 --network popcrn-net gclindsey/popcrn-api:api_v1_1```
 
 2. Access the GraphQL server in a browser:<br>
    `http://<EC2_PUBLIC_IP>:4001/graphql`
