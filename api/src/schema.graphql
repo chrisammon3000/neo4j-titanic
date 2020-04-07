@@ -16,7 +16,6 @@ type User {
   userSkills: [String]
   userClients: [String]
   userLocation: String
-  userInterestTags: [String]
   userFollows(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: OUT)
   userFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
   userProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name: "CREATED", direction: OUT)
@@ -32,7 +31,6 @@ type Project {
   projectDescription: String
   projectCreator(first: Int = 3, offset: Int = 0): [User] @relation(name: "CREATED", direction: IN)
   projectCreatedDate: Date
-  projectTagNames: [String]
   projectTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "IS_TAGGED", direction: OUT)
   projectCollaborators(first: Int = 3, offset: Int = 0): [User] @relation(name: "COLLABORATED_ON", direction: IN)
   projectFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
