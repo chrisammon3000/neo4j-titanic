@@ -2,7 +2,7 @@
 Graph database layer using Neo4j for the POPCRN app, accessed through a GraphQL API.
 
 ## Project Description
-Describes nodes, relationships, and the properties of each. Nodes include Users, Projects, Images and Tags. The database can be run inside a Docker container and accessed via http://<HOST_PUBLIC_IP>:7474.
+Describes nodes, relationships, and the properties of each. Nodes include Users, Projects, Images and Tags. The database can be run inside a Docker container and accessed via "http://<HOST_PUBLIC_IP>:7474".
 
 
 ## Getting Started
