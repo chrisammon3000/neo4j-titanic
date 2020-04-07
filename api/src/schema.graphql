@@ -30,7 +30,7 @@ type Project {
   projectId: ID!
   projectName: String
   projectDescription: String
-  projectCreator: String
+  projectCreator(first: Int = 3, offset: Int = 0): [User] @relation(name: "CREATED", direction: IN)
   projectCreatedDate: Date
   projectTagNames: [String]
   projectTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "IS_TAGGED", direction: OUT)
@@ -41,7 +41,7 @@ type Project {
   
 type Image {
   imageId: ID!
-  imageCreator: String
+  imageCreator(first: Int = 3, offset: Int = 0): [User] @relation(name: "CREATED", direction: IN)
   imageCaption: String
   imageDescription: String
   imageCreatedDate: Date
