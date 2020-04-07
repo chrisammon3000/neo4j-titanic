@@ -46,7 +46,7 @@ You will need:
 
 #### Remote GraphQL server
 1. Run the command:
-   ```docker run --name api_v1_1 -d -p 4001:4001 --network popcrn-net gclindsey/popcrn-api:api_v1_1```
+   ```docker run --name api_v1_2 -d -p 4001:4001 --network popcrn-net gclindsey/popcrn-api:api_v1_2```
 2. Access the GraphQL server in a browser:<br>
    `http://<EC2_PUBLIC_IP>:4001/graphql`
 3. Refer to the "DOCS" tab on the right side to view all possible Queries (retrieving data) and Mutations (updating data). 
