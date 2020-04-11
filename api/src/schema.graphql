@@ -16,6 +16,8 @@ type User {
   userSkills: [String]
   userClients: [String]
   userLocation: String
+  vFeed(first: Int = 3, offset: Int = 0): [Project] @cypher(statement: "MATCH (p:Project) RETURN p")
+  hFeed(first: Int = 3, offset: Int = 0): [Project] @cypher(statement: "MATCH (p:Project)-[:IS_TAGGED]->(t:Tag)<-[:FOLLOWS]-(this) RETURN p")
   userFollows(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: OUT)
   userFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
   userProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name: "CREATED", direction: OUT)
