@@ -50,6 +50,7 @@ const driver = neo4j.driver(
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer({
+  // inject `req` into context to use @isAuthenticated
   context: ({ req }) => {
     return {
       driver,
