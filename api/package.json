@@ -8,8 +8,7 @@
     "start-dev": "./node_modules/.bin/nodemon --watch src --ext js,graphql --exec babel-node  src/index.js",
     "build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
     "now-build": "babel src -d build && shx cp .env build && shx cp src/schema.graphql build",
-    "start": "npm run build && node build/index.js",
-    "seedDb": "./node_modules/.bin/babel-node src/seed/seed-db.js"
+    "start": "npm run build && node build/index.js"
   },
   "author": "Gregory Lindsey",
   "license": "MIT",
@@ -20,6 +19,7 @@
     "apollo-link-http": "^1.5.15",
     "apollo-server": "^2.8.2",
     "dotenv": "^7.0.0",
+    "graphql-auth-directives": "^2.2.0",
     "graphql-tag": "^2.10.1",
     "neo4j-driver": "^1.7.5",
     "neo4j-graphql-js": "^2.7.1",
