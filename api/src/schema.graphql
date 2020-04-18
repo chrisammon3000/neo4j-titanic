@@ -31,7 +31,7 @@ type User {
   userIsTagged(first: Int = 3, offset: Int = 0): [Image] @relation(name: "IS_TAGGED_IN", direction: OUT)
 }
 
-type Project {
+type Project @isAuthenticated {
   projectId: ID!
   projectName: String
   projectDescription: String
