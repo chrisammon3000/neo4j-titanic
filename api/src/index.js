@@ -19,7 +19,13 @@ const app = express();
  */
 
 const schema = makeAugmentedSchema({
-  typeDefs
+  typeDefs,
+  config: {
+    auth: {
+      isAuthenticated: true,
+      hasRole: true
+    }
+  }
   // add config: { auth: ... }
 });
 
