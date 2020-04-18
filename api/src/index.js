@@ -50,7 +50,12 @@ const driver = neo4j.driver(
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer({
-  context: { driver }, 
+  context: ({ req }) => {
+    return {
+      driver,
+      req
+    };
+  }, 
   schema: schema,
   introspection: true,
   playground: true
