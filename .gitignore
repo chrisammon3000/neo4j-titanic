@@ -13,7 +13,7 @@
 /api/README.md
 # /api/Dockerfile
 # /api/.dockerignore
-/api/
+# /api/
 *.pem
 docker-compose.yml
 load_db.py
