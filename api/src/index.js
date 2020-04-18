@@ -20,6 +20,7 @@ const app = express();
 
 const schema = makeAugmentedSchema({
   typeDefs
+  // add config: { auth: ... }
 });
 
 /*
@@ -42,7 +43,7 @@ const driver = neo4j.driver(
  * generated resolvers to connect to the database.
  */
 const server = new ApolloServer({
-  context: { driver },
+  context: { driver }, 
   schema: schema,
   introspection: true,
   playground: true
