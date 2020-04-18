@@ -23,7 +23,8 @@ const schema = makeAugmentedSchema({
   config: {
     auth: {
       isAuthenticated: true,
-      hasRole: true
+      hasRole: true,
+      hasScope: true
     }
   }
   // add config: { auth: ... }
