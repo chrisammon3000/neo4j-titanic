@@ -18,6 +18,7 @@
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.15",
     "apollo-server": "^2.8.2",
+    "cognito-express": "^2.0.16",
     "dotenv": "^7.0.0",
     "graphql-auth-directives": "^2.2.0",
     "graphql-tag": "^2.10.1",
