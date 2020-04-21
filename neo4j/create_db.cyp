@@ -11,15 +11,23 @@ CREATE (user:User {
     userPassword: trim(profile_line.userPassword) + "123",
     userGender: profile_line.userGender,
     userRating: profile_line.userRating,
-    userRoles: split(profile_line.userRoles, ','),
-    userInterestTags: split(profile_line.userInterestTags, ','),
+    userCreativeField: split(profile_line.userRoles, ','),
+    userCreativeInterestTags: split(profile_line.userInterestTags, ','),
     userBio: trim(profile_line.userBio),
     userSkills: split(profile_line.userSkills, ','),
     userClients: split(profile_line.userClients, ','),
-    userLocation: profile_line.userLocation,
+    userCity: profile_line.userLocation,
+    userCountry: 'United States',
     userWebsite: profile_line.userWebsite,
     userProfile_FG: profile_line.userProfile_FG,
-    userProfile_BG: profile_line.userProfile_BG 
+    userProfile_BG: profile_line.userProfile_BG,
+    userRateAmount: '100.00',
+    userRatePeriod: 'Hourly',
+    userAvailability: 'Part-time',
+    userAvailableDays: '[Weekdays, Weekends]',
+    reactionNotifications: TRUE,
+    userPhone: '310-321-7654',
+    userCompany: 'MyCompany'
     } )
 WITH profile_line, split(profile_line.userFollowers, ',') AS followers // (User)-[:FOLLOWS]->(User)
 UNWIND followers AS follower
@@ -39,8 +47,9 @@ CREATE (project:Project {
 	projectCreator: project_line.projectCreator,
     projectDescription: project_line.projectDescription,
     projectCreatedDate: project_line.projectCreatedDate,
-    projectCollaborators: split(project_line.projectCollaborators, ','),
-    projectTagNames: split(project_line.projectTagNames, ',')
+    projectCredits: split(project_line.projectCollaborators, ','),
+    projectTagNames: split(project_line.projectTagNames, ','),
+    projectCreativeInterestTags: 'tag name'
     } )
 WITH project_line, 
 	split(trim(project_line.projectCollaborators), ',') AS collaborators, 

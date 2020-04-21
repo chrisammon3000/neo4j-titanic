@@ -109,12 +109,3 @@ server.applyMiddleware({app, path});
 app.listen({port, path}, () => {
   console.log(`GraphQL server ready at http://localhost:${port}${path}`);
 });
-
-const checkSecret = () => {
-  if (!process.env.TOP_SECRET) {
-    process.env.TOP_SECRET = "secret"
-    console.log(process.env.TOP_SECRET)
-  }
-}
-
-checkSecret()
