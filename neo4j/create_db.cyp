@@ -1,6 +1,7 @@
 LOAD CSV WITH HEADERS // User
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
 CREATE (user:User {
+    userId: apoc.create.uuid(),
     userHandle: profile_line.userHandle,
 	userSiteName: trim(profile_line.userSiteName),
     userFirstName: trim(profile_line.userFirstName),
@@ -32,6 +33,7 @@ WITH max(1) AS dummy // Project nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
 CREATE (project:Project { 
+    projectUUID: apoc.create.uuid(),
     projectId: project_line.projectId,
     projectName: project_line.projectName,
 	projectCreator: project_line.projectCreator,
@@ -80,6 +82,7 @@ WITH max(1) AS dummy  // Image nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
+    imageUUID: apoc.create.uuid(),
     imageId: image_line.imageId,
     imageCreator: image_line.imageCreator,
 	imageCreatedDate: date(),
@@ -93,7 +96,7 @@ WITH image_line, split(image_line.imageTagNames, ',') AS tagnames // Tag nodes
 UNWIND tagnames AS tagname
 WITH DISTINCT tagname AS tag_node
 CREATE (tag:Tag { 
-    tagId: '(tagId)',
+    tagId: apoc.create.uuid(),
     tagName: tag_node,
 	tagCreatedDate: date(),
     tagCreatedBy: '(userHandle)'
