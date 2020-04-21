@@ -4,6 +4,7 @@ enum Role {
 }
 
 type User {
+  userId: String!
   userHandle: String!
   userFirstName: String
   userLastName: String
