@@ -21,7 +21,7 @@ CREATE (user:User {
     userWebsite: profile_line.userWebsite,
     userProfile_FG: profile_line.userProfile_FG,
     userProfile_BG: profile_line.userProfile_BG,
-    userRateAmount: '100.00',
+    userRateAmount: 100.00,
     userRatePeriod: 'Hourly',
     userAvailability: 'Part-time',
     userAvailableDays: '[Weekdays, Weekends]',
@@ -47,7 +47,7 @@ CREATE (project:Project {
 	projectCreator: project_line.projectCreator,
     projectDescription: project_line.projectDescription,
     projectCreatedDate: project_line.projectCreatedDate,
-    projectCredits: split(project_line.projectCollaborators, ','),
+    projectCollaborators: split(project_line.projectCollaborators, ','),
     projectTagNames: split(project_line.projectTagNames, ','),
     projectCreativeInterestTags: 'tag name'
     } )

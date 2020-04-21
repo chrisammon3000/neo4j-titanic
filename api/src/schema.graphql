@@ -18,26 +18,36 @@ type User {
   userSiteName: String
   userWebsite: String
   userRating: Float
-  userRoles: [String]
+  userCreativeField: [String]
   userSkills: [String]
   userClients: [String]
-  userLocation: String
+  userCity: String
+  userCountry: String
+  userRateAmount: Float
+  userRatePeriod: String
+  userAvailability: String
+  userAvailableDays: String
+  reactionNotifications: Boolean
+  userPhone: String
+  userCompany: String
   vFeed(first: Int = 3, offset: Int = 0): [Project] @cypher(statement: "MATCH (p:Project) RETURN p")
   userFollows(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: OUT)
   userFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
   userProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name: "CREATED", direction: OUT)
   userCollaborations(first: Int = 3, offset: Int = 0): [Project] @relation(name: "COLLABORATED_ON", direction: OUT)
-  userInterests(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "FOLLOWS", direction: OUT)
+  userCreativeInterestTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "FOLLOWS", direction: OUT)
   userImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "CREATED", direction: OUT)
   userIsTagged(first: Int = 3, offset: Int = 0): [Image] @relation(name: "IS_TAGGED_IN", direction: OUT)
 }
 
 type Project @isAuthenticated {
+  projectUUID: String
   projectId: ID!
   projectName: String
   projectDescription: String
   projectCreator(first: Int = 3, offset: Int = 0): [User] @relation(name: "CREATED", direction: IN)
   projectCreatedDate: Date
+  projectCreativeInterestTags: String
   projectTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "IS_TAGGED", direction: OUT)
   projectCollaborators(first: Int = 3, offset: Int = 0): [User] @relation(name: "COLLABORATED_ON", direction: IN)
   projectFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
@@ -45,6 +55,7 @@ type Project @isAuthenticated {
 }
   
 type Image {
+  imageUUID: String
   imageId: ID!
   imageCreator(first: Int = 3, offset: Int = 0): [User] @relation(name: "CREATED", direction: IN)
   imageCaption: String
@@ -57,7 +68,7 @@ type Image {
 }
 
 type Tag {
-  tagId: ID!
+  tagId: String
   tagName: String
   tagCreatedBy: String
   tagCreatedDate: Date
