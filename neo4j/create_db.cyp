@@ -10,6 +10,7 @@ CREATE (user:User {
     userEmail: profile_line.userEmail,
     userPassword: trim(profile_line.userPassword) + "123",
     userGender: profile_line.userGender,
+    userSince: date(),
     userRating: profile_line.userRating,
     userCreativeField: split(profile_line.userRoles, ','),
     userCreativeInterestTags: split(profile_line.userInterestTags, ','),

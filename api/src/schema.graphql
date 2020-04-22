@@ -14,6 +14,7 @@ type User {
   userProfile_FG: String
   userEmail: String
   userPassword: String
+  userSince: Date
   userGender: String
   userSiteName: String
   userWebsite: String
