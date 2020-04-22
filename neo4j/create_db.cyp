@@ -174,3 +174,14 @@ WITH user, image_URL
 MATCH (image:Image { imageURL: image_URL })
 CREATE(user)-[rel:IS_TAGGED_IN]->(image)
 SET rel.userTaggedDate = date(), rel.taggedByUser = '(userHandle)';
+
+LOAD CSV WITH HEADERS
+FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=451905057' AS row
+CREATE(comment:Comment { 
+	commentId: apoc.create.uuid(),
+    commentAuthor: row.commentAuthor,
+    commenteDate: row.commentDate,
+    commentBody: row.commentBody,
+    commentType: row.commentType,
+    projectId: row.projectId
+    })
