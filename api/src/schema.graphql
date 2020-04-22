@@ -39,6 +39,7 @@ type User {
   userCreativeInterestTags(first: Int = 3, offset: Int = 0): [Tag] @relation(name: "FOLLOWS", direction: OUT)
   userImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "CREATED", direction: OUT)
   userIsTagged(first: Int = 3, offset: Int = 0): [Image] @relation(name: "IS_TAGGED_IN", direction: OUT)
+  userComments(first: Int = 3, offset: Int = 0): [Comment] @relation(name:"POSTED", direction:OUT)
 }
 
 type Project @isAuthenticated {
@@ -52,6 +53,7 @@ type Project @isAuthenticated {
   projectCollaborators(first: Int = 3, offset: Int = 0): [User] @relation(name: "COLLABORATED_ON", direction: IN)
   projectFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name: "FOLLOWS", direction: IN)
   projectImages(first: Int = 3, offset: Int = 0): [Image] @relation(name: "FROM", direction: IN)
+  projectComments(first: Int = 3, offset: Int = 0): [Comment] @relation(name:"ABOUT", direction:IN)
 }
   
 type Image {
@@ -76,4 +78,18 @@ type Tag {
   tagFollowers(first: Int = 3, offset: Int = 0): [User] @relation(name:"FOLLOWS", direction:IN)
   tagProjects(first: Int = 3, offset: Int = 0): [Project] @relation(name:"IS_TAGGED", direction:IN)
   tagImages(first: Int = 3, offset: Int = 0): [Image] @relation(name:"IS_TAGGED", direction:IN)
+}
+
+type Comment {
+  	commentId: String!
+    commentAuthor: String!
+    commentUserId: String!
+    commentUser(first: Int = 3, offset: Int = 0): [User] @relation(name:"POSTED", direction:IN)
+    commentDate: Date!
+    commentBody: String!
+    commentType: String!
+    commentLang: String
+    commentLikes: Int 
+    projectId: String!
+    commentProject(first: Int = 3, offset: Int = 0): [Project] @relation(name:"ABOUT", direction:OUT)
 }

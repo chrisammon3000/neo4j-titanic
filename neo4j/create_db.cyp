@@ -179,10 +179,11 @@ FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK
 MERGE (comment:Comment { 
 	commentId: row.commentId,
     commentUserId: row.commentUserId,
-    commentDate: row.commentDate,
+    commentDate: date(),
     commentBody: row.commentBody,
     commentType: row.commentType,
-    commentLang: row.commentLang
+    commentLang: row.commentLang,
+    commentLikes: toInt(round(rand()*100)),
     projectId: row.projectId
     });
 
