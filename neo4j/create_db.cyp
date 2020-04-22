@@ -1,7 +1,7 @@
 LOAD CSV WITH HEADERS // User
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
 CREATE (user:User {
-    userId: apoc.create.uuid(),
+    userId: profile_line.userId,
     userHandle: profile_line.userHandle,
 	userSiteName: trim(profile_line.userSiteName),
     userFirstName: trim(profile_line.userFirstName),
@@ -42,7 +42,6 @@ WITH max(1) AS dummy // Project nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=276470380' AS project_line
 CREATE (project:Project { 
-    projectUUID: apoc.create.uuid(),
     projectId: project_line.projectId,
     projectName: project_line.projectName,
 	projectCreator: project_line.projectCreator,
@@ -92,7 +91,6 @@ WITH max(1) AS dummy  // Image nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
 CREATE (image:Image { 
-    imageUUID: apoc.create.uuid(),
     imageId: image_line.imageId,
     imageCreator: image_line.imageCreator,
 	imageCreatedDate: date(),
@@ -172,16 +170,29 @@ UNWIND user_handles AS user_handle
 MATCH (user:User { userHandle: user_handle})
 WITH user, image_URL
 MATCH (image:Image { imageURL: image_URL })
-CREATE(user)-[rel:IS_TAGGED_IN]->(image)
+CREATE (user)-[rel:IS_TAGGED_IN]->(image)
 SET rel.userTaggedDate = date(), rel.taggedByUser = '(userHandle)';
 
+WITH max(1) AS dummy // Comment nodes
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=451905057' AS row
-CREATE(comment:Comment { 
-	commentId: apoc.create.uuid(),
-    commentAuthor: row.commentAuthor,
-    commenteDate: row.commentDate,
+MERGE (comment:Comment { 
+	commentId: row.commentId,
+    commentUserId: row.commentUserId,
+    commentDate: row.commentDate,
     commentBody: row.commentBody,
     commentType: row.commentType,
+    commentLang: row.commentLang
     projectId: row.projectId
-    })
+    });
+
+// (Comment)-[:ABOUT]->(Project)
+MATCH (c:Comment), (p:Project)
+WHERE c.projectId = p.projectId
+CREATE (c)-[rel:ABOUT]->(p);
+
+// (User)-[:POSTED]->(Comment)
+MATCH (u:User), (c:Comment)
+WHERE u.userId = c.commentUserId
+CREATE (u)-[rel:POSTED]->(c)
+SET rel.postedDate = c.commentDate, c.commentAuthor = u.userHandle;

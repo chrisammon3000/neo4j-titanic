@@ -42,7 +42,6 @@ type User {
 }
 
 type Project @isAuthenticated {
-  projectUUID: String
   projectId: ID!
   projectName: String
   projectDescription: String
