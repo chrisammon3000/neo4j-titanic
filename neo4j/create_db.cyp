@@ -1,3 +1,4 @@
+// NODES 
 MATCH (n) DETACH DELETE n;
 LOAD CSV WITH HEADERS // Passenger nodes
 FROM "file:///titanic_clean.csv" AS row
@@ -53,6 +54,12 @@ CREATE (:Ticket { ticket: ticket });
 MATCH (p:Passenger)
 WITH DISTINCT p.deck AS deck
 CREATE (:Deck { deck: deck });
+
+// RELATIONSHIPS
+MATCH (p:Passenger) // IN_CLASS
+WITH p, p.pclass as class
+MATCH (c:Class { pclass: class })
+MERGE (p)-[:IN_CLASS]->(c);
 
 
 
