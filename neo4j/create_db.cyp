@@ -62,8 +62,10 @@ MATCH (p:Passenger) // BOARDED
 WITH p, p.lifeboat_no as lifeboat
 MATCH (l:Lifeboat { lifeboat_no: lifeboat })
 MERGE (p)-[:BOARDED]->(l);
-
-
+MATCH (p:Passenger) // ON_DECK
+WITH p, p.deck as deck
+MATCH (d:Deck { deck: deck })
+MERGE (p)-[:ON_DECK]->(d);
 
 
 
