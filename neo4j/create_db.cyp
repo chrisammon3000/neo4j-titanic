@@ -67,7 +67,10 @@ UNWIND cabins AS cabin
 MATCH (c:Cabin { cabin: cabin })
 MERGE (p)-[:SLEPT_IN]->(c);
 
-
+MATCH (p:Passenger) // EMBARKED_FROM
+WITH p, p.embarked as embarked
+MATCH (e:Embarked { embarked: embarked })
+MERGE (p)-[:EMBARKED_FROM]->(e)
 
 
 
