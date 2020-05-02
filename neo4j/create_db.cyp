@@ -20,21 +20,25 @@ CREATE (p:Passenger {
     survived: toInteger(row.survived),
     lifeboat_no: toInteger(row.boat),
     body: row.body
-    })
+    });
 
 // Class nodes (pclass)
 MATCH (p:Passenger)
 WITH DISTINCT p.pclass as class
-CREATE (c:Class { pclass: class })
+CREATE (c:Class { pclass: class });
 
 // Cabin nodes
 MATCH (p:Passenger)
 WITH DISTINCT split(p.cabin, ' ') as cabins
 UNWIND cabins AS cabin
-CREATE (c:Cabin { cabin: cabin})
+CREATE (c:Cabin { cabin: cabin });
+
+// Embarked nodes
+MATCH (p:Passenger)
+WITH DISTINCT p.embarked as embarked
+CREATE (:Embarked { embarked: embarked });
 
 
-// 
 
 // (p)-[:IN_CLASS]->(c)
 MATCH (c:Class)
