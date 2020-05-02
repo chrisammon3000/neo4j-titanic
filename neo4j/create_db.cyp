@@ -61,6 +61,14 @@ WITH p, p.pclass as class
 MATCH (c:Class { pclass: class })
 MERGE (p)-[:IN_CLASS]->(c);
 
+MATCH (p:Passenger) // SLEPT_IN
+WITH p, split(p.cabin, ' ') as cabins
+UNWIND cabins AS cabin
+MATCH (c:Cabin { cabin: cabin })
+MERGE (p)-[:SLEPT_IN]->(c);
+
+
+
 
 
 
