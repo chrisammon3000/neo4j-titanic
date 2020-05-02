@@ -1,7 +1,6 @@
 MATCH (n) DETACH DELETE n;
 LOAD CSV WITH HEADERS // Passenger nodes
 FROM "file:///titanic_clean.csv" AS row
-
 CREATE (p:Passenger {
 	name: row.name,
     age: toFloat(row.age),
@@ -18,7 +17,7 @@ CREATE (p:Passenger {
     deck: row.deck,
     sex: row.sex,
     survived: toInteger(row.survived),
-    lifeboat_no: toInteger(row.boat),
+    lifeboat_no: row.boat,
     body: row.body
     });
 
@@ -38,7 +37,7 @@ MATCH (p:Passenger)
 WITH DISTINCT p.embarked as embarked
 CREATE (:Embarked { embarked: embarked });
 
-
+// Lifeboat
 
 // (p)-[:IN_CLASS]->(c)
 MATCH (c:Class)
