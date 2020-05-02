@@ -9,6 +9,7 @@
 // Project files
 *.pem
 Dockerfile
+/neo4j/Dockerfile
 
 /logs
 
