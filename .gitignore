@@ -8,7 +8,7 @@
 
 // Project files
 *.pem
-# Dockerfile
+Dockerfile
 
 /logs
 

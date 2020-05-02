@@ -74,4 +74,4 @@ MATCH (p1:Passenger) // RELATED_TO
 WITH p1, p1.surname as surname
 MATCH (p2:Passenger { surname: surname })
 WHERE p1.name <> p2.name
-MERGE (p1)<-[:RELATED_TO]->(p2)
+MERGE (p1)<-[:RELATED_TO]->(p2);
