@@ -49,7 +49,12 @@ MATCH (p:Passenger)
 WITH DISTINCT p.ticket AS ticket
 CREATE (:Ticket { ticket: ticket });
 
-// 
+// Deck nodes
+MATCH (p:Passenger)
+WITH DISTINCT p.deck AS deck
+CREATE (:Deck { deck: deck });
+
+
 
 
 
