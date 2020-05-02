@@ -1,3 +1,168 @@
+MATCH (n) DETACH DELETE n;
+LOAD CSV WITH HEADERS // Passenger nodes
+FROM "file:///titanic_clean.csv" AS row
+
+CREATE (p:Passenger {
+	name: row.name,
+    age: toFloat(row.age),
+    embarked: row.embarked,
+    destination: row.`home.dest`,
+    pclass: toInteger(row.pclass),
+	fare: toFloat(row.fare),
+    ticket: row.ticket,
+    sibsp: row.sibsp,
+    parch: row.parch,
+    family_size: toInteger(row.`family.size`),
+    surname: row.surname,
+    cabin: row.cabin,
+    deck: row.deck,
+    sex: row.sex,
+    survived: toInteger(row.survived),
+    lifeboat_no: toInteger(row.boat),
+    body: row.body
+    })
+
+// Class nodes (pclass)
+MATCH (p:Passenger)
+WITH DISTINCT p.pclass as class
+CREATE (c:Class { pclass: class })
+
+// Cabin nodes
+MATCH (p:Passenger)
+WITH DISTINCT split(p.cabin, ' ') as cabins
+UNWIND cabins AS cabin
+CREATE (c:Cabin { cabin: cabin})
+
+
+// 
+
+// (p)-[:IN_CLASS]->(c)
+MATCH (c:Class)
+WITH c, c.pclass as class
+MATCH (p:Passenger { pclass: class })
+MERGE (p)-[:IN_CLASS]->(c)
+
+WITH max(1) AS dummy // Cabin nodes (cabin)
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH row, split(row.cabin, ' ') as cabins
+UNWIND cabins AS cabin
+WITH DISTINCT cabin AS cabin_no
+CREATE (c:Cabin { no: cabin_no });
+
+WITH max(1) AS dummy // (Passenger)-[:SLEPT_IN]->(Cabin)
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH row.name as name, split(row.cabin, ' ') as cabins
+UNWIND cabins AS cabin
+MATCH (p:Passenger { name: name })
+WITH p, cabin
+MATCH (c:Cabin { no: cabin })
+CREATE (p)-[:SLEPT_IN]->(c);
+
+WITH max(1) AS dummy // Embarked nodes
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH DISTINCT row.embarked AS embarked
+CREATE (e:Embarked { city: embarked });
+
+WITH max(1) AS dummy // (Passenger)-[:EMBARKED_FROM]->(Embarked)
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+MATCH (p:Passenger { name: row.name })
+WITH row, p
+MATCH (e:Embarked { city: row.embarked })
+CREATE (p)-[:EMBARKED_FROM]->(e)
+
+WITH max(1) AS dummy // Update Embarked labels
+MATCH (e:Embarked)
+SET e.city = CASE WHEN e.city = "S" THEN "Southampton"
+	WHEN e.city = "Q" THEN "Queenstown"
+    WHEN e.city = "C" THEN "Cherbourg" END;
+
+WITH max(1) AS dummy // Lifeboat nodes
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH row, split(row.boat, ' ') as boats
+UNWIND boats AS boat
+WITH DISTINCT boat AS boat
+CREATE (l:Lifeboat { lifeboat: boat })
+
+WITH max(1) AS dummy // (Passenger)-[:BOARDED]->(Lifeboat)
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH row.name as name, split(row.boat, ' ') as boats
+UNWIND boats AS boat
+MATCH (p:Passenger { name: name })
+WITH DISTINCT boat as lifeboat, p
+MATCH (l:Lifeboat { lifeboat: lifeboat })
+CREATE (p)-[:BOARDED]->(l)
+
+WITH max(1) AS dummy // Update Lifeboat labels
+MATCH (l:Lifeboat)
+SET l.lifeboat =  "Lifeboat " + l.lifeboat
+
+// Returns distinct destinations, needs to be parsed and cleaned
+// to avoid duplicate destinations
+LOAD CSV WITH HEADERS
+FROM "file:///titanic_clean.csv" AS row
+WITH DISTINCT split(row.`home.dest`, ' / ') AS destinations
+UNWIND destinations as destination
+WITH DISTINCT trim(destination) as dest
+RETURN DISTINCT dest ORDER BY dest
+
+// remove "? "
+// split "Asarum, Sweden Brooklyn, NY"
+// split "Aughnacliff, Co Longford, Ireland New York, NY"
+// split "Austria Niagara Falls, NY"
+// add "NI" to "Belfast"
+// split "Belgium Montreal, PQ" and "Belgium Detroit, MI"
+// split "Birkdale, England Cleveland, Ohio"
+// "Bournemouth, England Newark, NJ"
+// resolve "Bournmouth, England" and "Bournemouth, England"
+// split "Brennes, Norway New York"
+// split "Bristol, England Cleveland, OH"
+// resolve "Bryn Mawr, PA, USA" and "Bryn Mawr, PA"
+// split "Bulgaria Chicago, IL" and "Bulgaria Chicago, IL"
+// resolve "Chicago, IL" and "Chicago"
+// split "Co Athlone, Ireland New York, NY", "Co Clare, Ireland Washington, DC",
+//     "Co Cork, Ireland Charlestown, MA", "Co Cork, Ireland Roxbury, MA", 
+//     "Co Limerick, Ireland Sherbrooke, PQ", "Co Longford, Ireland New York, NY", 
+//     "Co Sligo, Ireland Hartford, CT", "Co Sligo, Ireland New York, NY"
+// split "Cornwall, England Houghton, MI"
+// split "Dagsas, Sweden Fower, MN"
+// split "Devon, England Wichita, KS"
+// split "England Albion, NY", "England Brooklyn, NY", "England New York, NY", "England Oglesby, IL",
+//     "England Salt Lake City, Utah"
+// split "Finland Sudbury, ON"
+// split "Foresvik, Norway Portland, ND", split "Goteborg, Sweden Huntley, IL"
+// split "Helsinki, Finland Ashtabula, Ohio"
+// split "Hong Kong New York, NY"
+// split "Ireland Brooklyn, NY",  "Ireland Chicago, IL", "Ireland New York, NY", "Ireland Philadelphia, PA"
+// split "Italy Philadelphia, PA"
+// split "Karberg, Sweden Jerome Junction, AZ"
+// split "Kilmacowen, Co Sligo, Ireland New York, NY"
+// split "Kingwilliamstown, Co Cork, Ireland Glens Falls, NY"
+// split "Kingwilliamstown, Co Cork, Ireland New York, NY"
+// split "Kingwilliamstown, Co Cork, Ireland New York, NY"
+// split "Liverpool, England Bedford, OH"
+// split "London Vancouver, BC"
+// split "London Brooklyn, NY"
+// split "London New York, NY"
+// split "London Skanteales, NY"
+// resolve "London, England", "London"
+// split "London, England Norfolk, VA"
+// resolve "Lower Clapton, Middlesex or Erdington, Birmingham", "Marietta, Ohio and Milwaukee, WI"
+// split "Medeltorp, Sweden Chicago, IL"
+
+replace Ohio with OH
+replace Guernsey with Guernsey, England
+
+
+///END TITANIC
+
+// BEGIN EXAMPLE FROM PREVIOUS PROJECT
+
 LOAD CSV WITH HEADERS // User
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=1801331028' AS profile_line
 CREATE (user:User {
@@ -109,6 +274,7 @@ CREATE (tag:Tag {
 	tagCreatedDate: date(),
     tagCreatedBy: '(userHandle)'
     } );
+
 WITH max(1) AS dummy // (Image)-[:FROM]->(Project) - there is no project for the value 'Display' in media.csv
 LOAD CSV WITH HEADERS
 FROM 'https://docs.google.com/spreadsheets/d/1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg/export?format=csv&id=1cuv7D-urC6ZZsulGfmNuDpbWdnIQ_pfbWK2SPVCJGpg&gid=0' AS image_line
