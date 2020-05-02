@@ -72,7 +72,10 @@ WITH p, p.embarked as embarked
 MATCH (e:Embarked { embarked: embarked })
 MERGE (p)-[:EMBARKED_FROM]->(e)
 
-
+MATCH (p:Passenger) // BOARDED
+WITH p, p.lifeboat_no as lifeboat
+MATCH (l:Lifeboat { lifeboat_no: lifeboat })
+MERGE (p)-[:BOARDED]->(l);
 
 
 
