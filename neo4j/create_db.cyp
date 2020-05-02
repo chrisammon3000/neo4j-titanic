@@ -38,6 +38,19 @@ WITH DISTINCT p.embarked as embarked
 CREATE (:Embarked { embarked: embarked });
 
 // Lifeboat
+MATCH (p:Passenger)
+WITH split(p.lifeboat_no, ' ') AS lifeboats
+UNWIND lifeboats AS lifeboat
+WITH DISTINCT lifeboat AS boat
+CREATE (:Lifeboat { lifeboat_no: boat });
+
+// 
+
+
+
+
+
+
 
 // (p)-[:IN_CLASS]->(c)
 MATCH (c:Class)
