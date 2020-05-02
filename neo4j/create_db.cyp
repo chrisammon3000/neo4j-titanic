@@ -1,5 +1,6 @@
-// NODES 
 MATCH (n) DETACH DELETE n;
+
+// NODES 
 LOAD CSV WITH HEADERS // Passenger nodes
 FROM "file:///titanic_clean.csv" AS row
 CREATE (p:Passenger {
@@ -21,37 +22,25 @@ CREATE (p:Passenger {
     lifeboat_no: row.boat,
     body: row.body
     });
-
-// Class nodes (pclass)
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Class nodes (pclass)
 WITH DISTINCT p.pclass as class
 CREATE (c:Class { pclass: class });
-
-// Cabin nodes
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Cabin nodes
 WITH DISTINCT split(p.cabin, ' ') as cabins
 UNWIND cabins AS cabin
 CREATE (c:Cabin { cabin: cabin });
-
-// Embarked nodes
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Embarked nodes
 WITH DISTINCT p.embarked as embarked
 CREATE (:Embarked { embarked: embarked });
-
-// Lifeboat
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Lifeboat
 WITH split(p.lifeboat_no, ' ') AS lifeboats
 UNWIND lifeboats AS lifeboat
 WITH DISTINCT lifeboat AS boat
 CREATE (:Lifeboat { lifeboat_no: boat });
-
-// Ticket nodes
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Ticket nodes
 WITH DISTINCT p.ticket AS ticket
 CREATE (:Ticket { ticket: ticket });
-
-// Deck nodes
-MATCH (p:Passenger)
+MATCH (p:Passenger) // Deck nodes
 WITH DISTINCT p.deck AS deck
 CREATE (:Deck { deck: deck });
 
@@ -60,18 +49,15 @@ MATCH (p:Passenger) // IN_CLASS
 WITH p, p.pclass as class
 MATCH (c:Class { pclass: class })
 MERGE (p)-[:IN_CLASS]->(c);
-
 MATCH (p:Passenger) // SLEPT_IN
 WITH p, split(p.cabin, ' ') as cabins
 UNWIND cabins AS cabin
 MATCH (c:Cabin { cabin: cabin })
 MERGE (p)-[:SLEPT_IN]->(c);
-
 MATCH (p:Passenger) // EMBARKED_FROM
 WITH p, p.embarked as embarked
 MATCH (e:Embarked { embarked: embarked })
-MERGE (p)-[:EMBARKED_FROM]->(e)
-
+MERGE (p)-[:EMBARKED_FROM]->(e);
 MATCH (p:Passenger) // BOARDED
 WITH p, p.lifeboat_no as lifeboat
 MATCH (l:Lifeboat { lifeboat_no: lifeboat })
