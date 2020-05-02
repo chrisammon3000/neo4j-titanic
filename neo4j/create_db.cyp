@@ -66,6 +66,12 @@ MATCH (p:Passenger) // ON_DECK
 WITH p, p.deck as deck
 MATCH (d:Deck { deck: deck })
 MERGE (p)-[:ON_DECK]->(d);
+MATCH (p:Passenger) // HELD_TICKET
+WITH p, p.ticket as ticket
+MATCH (t:Ticket { ticket: ticket })
+MERGE (p)-[:HELD_TICKET]->(t);
+
+// HELD_TICKET
 
 
 
