@@ -44,6 +44,11 @@ UNWIND lifeboats AS lifeboat
 WITH DISTINCT lifeboat AS boat
 CREATE (:Lifeboat { lifeboat_no: boat });
 
+// Ticket nodes
+MATCH (p:Passenger)
+WITH DISTINCT p.ticket AS ticket
+CREATE (:Ticket { ticket: ticket });
+
 // 
 
 
