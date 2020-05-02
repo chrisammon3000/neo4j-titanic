@@ -4,17 +4,12 @@
 
 // Directories
 /data
-/api/build
-/api/node_modules
-/aws
 
 
 // Project files
-/api/README.md
-# /api/Dockerfile
-# /api/.dockerignore
-# /api/
 *.pem
-docker-compose.yml
-load_db.py
 # Dockerfile
+
+/logs
+
+/neo4j
