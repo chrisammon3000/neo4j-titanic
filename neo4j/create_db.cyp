@@ -8,6 +8,7 @@ CREATE (p:Passenger {
     age: toFloat(row.age),
     embarked: row.embarked,
     destination: row.`home.dest`,
+    home_country: row.`home.country`,
     pclass: toInteger(row.pclass),
 	fare: toFloat(row.fare),
     ticket: row.ticket,
