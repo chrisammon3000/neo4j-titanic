@@ -45,9 +45,10 @@ MATCH (p:Passenger) // Deck
 WITH DISTINCT p.deck AS deck
 CREATE (:Deck { deck: deck });
 MATCH (p:Passenger) // Destination
-WITH DISTINCT split(p.home_country, ', ') AS countries
+WITH split(p.home_country, ', ') AS countries
 UNWIND countries AS country
-CREATE (:Country { name: country });
+WITH DISTINCT country AS name
+CREATE (:Country { name: name });
 
 // RELATIONSHIPS
 MATCH (p:Passenger) // IN_CLASS
@@ -80,3 +81,8 @@ WITH p1, p1.surname as surname
 MATCH (p2:Passenger { surname: surname })
 WHERE p1.name <> p2.name
 MERGE (p1)<-[:RELATED_TO]->(p2);
+MATCH (p:Passenger) // TRAVELING_TO
+WITH p, split(p.home_country, ', ') as countries
+UNWIND countries AS country
+MATCH (c:Country { name: country })
+MERGE (p)-[:TRAVELING_TO]->(c);
