@@ -44,6 +44,10 @@ CREATE (:Ticket { ticket: ticket });
 MATCH (p:Passenger) // Deck
 WITH DISTINCT p.deck AS deck
 CREATE (:Deck { deck: deck });
+MATCH (p:Passenger) // Destination
+WITH DISTINCT split(p.home_country, ', ') AS countries
+UNWIND countries AS country
+CREATE (:Country { name: country });
 
 // RELATIONSHIPS
 MATCH (p:Passenger) // IN_CLASS
