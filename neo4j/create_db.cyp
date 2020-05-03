@@ -2,7 +2,7 @@ MATCH (n) DETACH DELETE n;
 
 // NODES 
 LOAD CSV WITH HEADERS // Passenger
-FROM "file:///titanic_clean.csv" AS row
+FROM "file:///titanic_final.csv" AS row
 CREATE (p:Passenger {
 	name: row.name,
     age: toFloat(row.age),
