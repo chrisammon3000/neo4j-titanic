@@ -105,3 +105,6 @@ setup.py
 test_environment.py
 tox.ini
 /src
+
+# Elasticsearch
+/es
