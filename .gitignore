@@ -100,7 +100,6 @@ source.txt
 /reports
 /docs
 /models
-*.txt
 setup.py
 test_environment.py
 tox.ini
