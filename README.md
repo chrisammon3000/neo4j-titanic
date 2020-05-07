@@ -1,13 +1,8 @@
 # titanic-neo4j
-Graph analysis of Titanic dataset using Python for data pre-proceesing and Neo4j for graph analysis. 
+Data pipeline for the *RMS Titanic* dataset using Python for preprocessing, NLP, and geoparsing and Neo4j for graph analysis. 
 
 ## Project Description
-The project aims to use graph analysis to investigate interesting questions such as:
-
-1) **What was the plight of families during the rescue?**
-
-## Sources
-A complete *Titanic* dataset is available from [https://data.world/nrippner/titanic-disaster-dataset](https://data.world/nrippner/titanic-disaster-dataset). 
+The project loads the *RMS Titanic* dataset into Neo4j where family relationships between passengers as well as context including other entities such as lifeboats, destination countries can be visualized, analyzed and explored.
 
 ## Getting up and running
 To run the preprocssing steps an ElasicSearch container must be running and accessible on port 9200:
@@ -17,3 +12,6 @@ docker pull elasticsearch:5.5.2 \
 && tar -xzf geonames_index.tar.gz \
 && docker run -d -p 127.0.0.1:9200:9200 -v "$(pwd)/es/geonames_index/:/usr/share/elasticsearch/data" elasticsearch:5.5.2
 ```
+
+## Sources
+A complete *Titanic* dataset is available from [https://data.world/nrippner/titanic-disaster-dataset](https://data.world/nrippner/titanic-disaster-dataset). 
