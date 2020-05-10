@@ -100,3 +100,6 @@ source.txt
 
 # Elasticsearch
 /es
+
+# Geoparse service
+/geoparse
