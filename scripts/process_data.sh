@@ -1,14 +1,3 @@
-# curl csv file into data/raw
-curl 
+#!/bin/bash
 
-
-# check hash
-
-# --geoparse=false
-
-# run pipeline cleaning step
-
-# if --geoparse=true
-# run pipeline geoparsing step 
-
-# else load graph
+python src/preprocess.py $1
