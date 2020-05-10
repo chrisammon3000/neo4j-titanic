@@ -90,20 +90,13 @@ target/
 
 # Project files
 *.pem
-Dockerfile
-/neo4j/Dockerfile
 /logs
-/neo4j
 source.txt
 
 /references
 /reports
 /docs
 /models
-setup.py
-test_environment.py
-tox.ini
-/src
 
 # Elasticsearch
 /es

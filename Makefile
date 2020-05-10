@@ -5,13 +5,13 @@
 #################################################################################
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PROJECT_NAME = titanic-neo4j
+PROJECT_NAME = neo4j-titanic
 PYTHON_INTERPRETER = python3
 
 ifeq (,$(shell which conda))
 HAS_CONDA=False
 else
-HAS_CONDA=True
+HAS_CONDA=False
 endif
 
 #################################################################################
@@ -41,7 +41,7 @@ create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(PROJECT_NAME) python=3
+	conda create --name $(PROJECT_NAME) python=3.5
 else
 	conda create --name $(PROJECT_NAME) python=2.7
 endif
@@ -56,22 +56,22 @@ else
 endif
 
 ## Test python environment is setup correctly
-test_environment: geoparser
+test_environment:  # geoparser
 	$(PYTHON_INTERPRETER) test_environment.py
 
-geoparser:
-	# move to external script
-	set -- $(locale LC_MESSAGES)
-	yesptrn="$1"; noptrn="$2"; yesword="$3"; noword="$4"
+# geoparser:
+# 	# move to external script
+# 	set -- $(locale LC_MESSAGES)
+# 	yesptrn="$1"; noptrn="$2"; yesword="$3"; noword="$4"
 
-	while true; do
-		read -p "Install (${yesword} / ${noword})? " yn
-		case $yn in
-			${yesptrn##^} ) make install_geoparser; break;;
-			${noptrn##^} ) exit;;
-			* ) echo "Answer ${yesword} / ${noword}.";;
-		esac
-	done
+# 	while true; do
+# 		read -p "Install (${yesword} / ${noword})? " yn
+# 		case $yn in
+# 			${yesptrn##^} ) make install_geoparser; break;;
+# 			${noptrn##^} ) exit;;
+# 			* ) echo "Answer ${yesword} / ${noword}.";;
+# 		esac
+# 	done
 
 #################################################################################
 # PROJECT RULES                                                                 #
