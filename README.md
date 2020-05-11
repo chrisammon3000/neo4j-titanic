@@ -22,6 +22,7 @@ Either Anaconda or Virtualenv can be used. Conda is recommended.
 ```
 make create_environment
 ```
+Select y/n whether to include the geoparsing step or not.
 
 ### Start Containers
 Neo4j can be run inside a Docker container. To do so run from the root directory:

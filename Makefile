@@ -25,7 +25,8 @@ requirements: test_environment
 
 ## Deploy Docker containers
 docker: requirements
-	docker build -t neo4j-titanic:neo4j_db ./neo4j \
+	bash scripts/setup.sh \
+	&& docker build -t neo4j-titanic:neo4j_db ./neo4j \
 	&& docker run --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
 	-v $PWD/data/interim:/var/lib/neo4j/import neo4j-titanic:neo4j_db
 	
@@ -34,7 +35,8 @@ docker: requirements
 
 ## Make Dataset
 data: docker
-	$(PYTHON_INTERPRETER) python src/preprocess.py $1
+	$(PYTHON_INTERPRETER) src/preprocess.py $1
+	bash scripts/load_data.sh
 
 ## Delete all compiled Python files
 clean:
@@ -47,6 +49,8 @@ lint:
 
 ## Set up python interpreter environment
 create_environment:
+# Include geoparsing step?
+	# If yes -> GEOPARSE=True
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 		# if GEOPARSE=true
