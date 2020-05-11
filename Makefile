@@ -9,7 +9,7 @@ PROJECT_NAME = neo4j-titanic
 PYTHON_INTERPRETER = python3
 
 ifeq (,$(shell which conda))
-HAS_CONDA=False
+HAS_CONDA=True
 else
 HAS_CONDA=False
 endif
@@ -23,9 +23,18 @@ requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
+## Deploy Docker containers
+docker: requirements
+	docker build -t neo4j-titanic:neo4j_db ./neo4j \
+	&& docker run --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
+	-v $PWD/data/interim:/var/lib/neo4j/import neo4j-titanic:neo4j_db
+	
+# if GEOPARSE=True
+	# run geoparse/scripts/setup_es.sh
+
 ## Make Dataset
-data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+data: docker
+	$(PYTHON_INTERPRETER) python src/preprocess.py $1
 
 ## Delete all compiled Python files
 clean:
@@ -40,13 +49,14 @@ lint:
 create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
+		# if GEOPARSE=true
+		#	run geoparse/scripts/geoparse_env.sh
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
 	conda create --name $(PROJECT_NAME) python=3.5
 else
 	conda create --name $(PROJECT_NAME) python=2.7
 endif
 		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
-		# rm _tmp environment files
 else
 	$(PYTHON_INTERPRETER) -m pip install -q virtualenv virtualenvwrapper
 	@echo ">>> Installing virtualenvwrapper if not already installed.\nMake sure the following lines are in shell startup file\n\
@@ -56,22 +66,8 @@ else
 endif
 
 ## Test python environment is setup correctly
-test_environment:  # geoparser
+test_environment:
 	$(PYTHON_INTERPRETER) test_environment.py
-
-# geoparser:
-# 	# move to external script
-# 	set -- $(locale LC_MESSAGES)
-# 	yesptrn="$1"; noptrn="$2"; yesword="$3"; noword="$4"
-
-# 	while true; do
-# 		read -p "Install (${yesword} / ${noword})? " yn
-# 		case $yn in
-# 			${yesptrn##^} ) make install_geoparser; break;;
-# 			${noptrn##^} ) exit;;
-# 			* ) echo "Answer ${yesword} / ${noword}.";;
-# 		esac
-# 	done
 
 #################################################################################
 # PROJECT RULES                                                                 #
