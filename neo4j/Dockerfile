@@ -1,5 +1,8 @@
-FROM neo4j:3.5.12
+# docker build -t gclindsey/neo4j-titanic:neo4j_db ./neo4j \
+# && docker run --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
+# -v $PWD/data/interim:/var/lib/neo4j/import gclindsey/neo4j-titanic:neo4j_db
 
+FROM neo4j:3.5.12
 # RUN apt-get update \
 #     && apt-get install -y wget openssl apt-utils zip unzip
 
@@ -12,15 +15,6 @@ RUN sh -c 'cd /var/lib/neo4j/plugins && curl -L -O "${APOC_URI}"'
 
 ENV GRAPHQL_URI https://github.com/neo4j-graphql/neo4j-graphql/releases/download/${GRAPHQL_VERSION}/neo4j-graphql-${GRAPHQL_VERSION}.jar
 RUN sh -c 'cd /var/lib/neo4j/plugins && curl -L -O "${GRAPHQL_URI}"'
-
-# ENV DB_VERSION="3274226"
-# RUN wget "https://zenodo.org/record/${DB_VERSION}/files/neodb-db-data.tar.bz2" \
-#     -O neodb_db_data.tar.bz2 \
-#     && tar xvfj neodb_db_data.tar.bz2 \
-#     && rm -rf neodb_db_data.tar.bz2 \
-#     && cp -r databases /data/
-
-COPY ./create_db.cyp /var/lib/neo4j/import
 
 EXPOSE 7474 7473 7687
 
