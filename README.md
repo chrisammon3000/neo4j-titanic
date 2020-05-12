@@ -1,21 +1,22 @@
 # neo4j-titanic
-Straightforward data pipeline for the *RMS Titanic* dataset using Python and Pandas library for preprocessing, as well as NLTK, spaCy and Mordecai for NLP and geoparsing. The data is loaded into a Neo4j graph database for analysis.
+Simple data pipeline for the *RMS Titanic* dataset using Python and Pandas library for preprocessing, as well as NLTK, spaCy and Mordecai for NLP driven geoparsing. The data is loaded into a Neo4j graph database for exploration and analysis.
 
 ## Project Description
 The project loads the *RMS Titanic* dataset into Neo4j where relationships between passengers and other entities such as other passengers, lifeboats, and destination countries can be visualized, analyzed and explored.
 
-The pipeline contains two steps 1) preprocessing and 2) geoparsing. The purpose of geoparsing is to extract the destination country of each passenger from the unstructured text in the `home.dest` column. The geoparsing step is optional and requires a running Elasticsearch container, NLTK libraries, spaCy and a gazeteer downloaded and installed. 
+The pipeline contains two steps 1) preprocessing and 2) geoparsing. The purpose of the geoparsing step is to extract the destination country of each passenger from the unstructured text in the `home.dest` column. The geoparsing step is optional and requires a running Elasticsearch container, NLTK libraries, spaCy and a gazeteer downloaded and installed. 
 
 If only the preprocessing step is run, the graph will not contain nodes for destination country.
 
 ## Getting up and running
 
 ### Environment Variables
-Determine whether to run the pipeline with or without geoparsing. Running with geoparsing will take additional resources. Update the `.env` file to reflect:
+Determine whether to run the pipeline with or without geoparsing. Running with geoparsing will take additional resources. The `.env` file is updated to reflect:
 ```
 GEOPARSE=True  # include geoparsing step
 GEOPARSE=False  # skip geoparsing step
 ```
+This preference is set when running `make create_environment` below.
 
 ### Create Environment
 Either Anaconda or Virtualenv can be used. Conda is recommended.
@@ -38,7 +39,7 @@ cd neo4j-titanic \
 -v $PWD/data/interim:/var/lib/neo4j/import neo4j-titanic:neo4j_db
 ```
 #### Elasticsearch (geoparsing only)
-Automated if `GEOPARSE=True`. This will run the Elasticsearch container from scratch:
+Automated with `make docker` if `GEOPARSE=True`. This will run the Elasticsearch container from scratch:
 ```
 docker run -d -p 127.0.0.1:9200:9200 -v $PWD/geoparse/es/geonames_index/:/usr/share/elasticsearch/data elasticsearch:5.5.2
 ```

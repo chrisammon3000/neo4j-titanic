@@ -1,4 +1,6 @@
 #!/bin/bash
 
-mkdir -p datta/{interim,processed,raw}
+# mkdir -p data/{interim,processed,raw}
 # curl titanic.csv
+
+conda env create -f environment.yml
