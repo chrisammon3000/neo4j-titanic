@@ -1,7 +1,5 @@
 .PHONY: clean data
 
-##.DEFAULT_GOAL := data
-
 SHELL=/bin/bash
 CONDAROOT = /Users/gregory/anaconda3
 

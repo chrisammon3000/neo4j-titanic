@@ -106,3 +106,4 @@ setup.py
 
 # Geoparse service
 /geoparse
+geoparse.py
