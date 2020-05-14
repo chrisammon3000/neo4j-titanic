@@ -17,7 +17,7 @@ import sys
 import pandas as pd
 
 # Download dataset url
-#url = 'https://query.data.world/s/xjk6hp7t7w3553bfpkfshr2bjd67a4'
+url = 'https://query.data.world/s/xjk6hp7t7w3553bfpkfshr2bjd67a4'
 
 def clean_data(data):
     """
@@ -155,10 +155,10 @@ if __name__=='__main__':
 
     cwd = os.getcwd()
 
-    data = sys.argv[1]
+    #data = sys.argv[1]
 
-    print("Reading from: {}".format(data))
-    data = pd.read_csv(data)
+    print("Reading from: {}".format(url))
+    data = pd.read_csv(url)
 
     print('Processing...')
     data = clean_data(data)
