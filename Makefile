@@ -16,17 +16,17 @@ create_env: delete_env
 	&& conda deactivate
 
 ## Create data directory if not present
-check: 
+check_directory: 
 	@if [ ! -d "./data" ]; then mkdir -p data/{interim,processed,raw}; fi
 
 ## Fetch, process and save data
-process_data: check
+process_data: check_directory
 	@echo "### Begin Pipeline ###"
 	@python src/preprocess.py
 
 ## Start Docker Neo4j Instance
 db: process_data
-	@echo "### Building Neo4j Docker instance ###"
+	@echo "### Building Neo4j Docker instance... ###"
 	@[[ $$(docker ps -f "name=neo4j_db" --format '{{.Names}}') != "neo4j_db" ]] || docker rm -f neo4j_db
 	@docker build -t neo4j-titanic:neo4j_db ./neo4j && \
 	docker run --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
@@ -38,23 +38,24 @@ db: process_data
 	done
 	@printf "%s\n" " "
 
-## Load data into Neo4j
+## Run pipeline
 data: db
 	@echo "### Importing data... ###"
 	@cat neo4j/create_db.cyp | docker exec --interactive neo4j_db bin/cypher-shell -u neo4j -p test
 	@printf "Finished!"
 	@printf "\n%s\n" 'Neo4j is available at http://localhost:7474.'
 
-## Tear down database
+## Stop Neo4j
 stop_db:
-	@echo "### Removing container ###"
+	@echo "### Stopping Neo4j... ###"
 	@docker exec --interactive neo4j_db bin/neo4j stop
 
 
 ## Delete all compiled Python files
-clean_up:
+clean_up: stop_db
+	@echo "### Removing container... ###"
 	@docker rm -f neo4j_db
-	@echo "Cleaning up cache files..."
+	@echo "### Cleaning up cache... ###"
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 	@echo "Done."

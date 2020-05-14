@@ -17,6 +17,8 @@ This will fetch the data, process it and save it to the /data folder, pull a Neo
 
 To explore the database, navigate to the [Neo4j Browser](http://localhost:7474/browser/) and run any Cypher query. 
 
+When finished, ```make clean_up``` will stop Neo4j, remove the container and clean up cache files.
+
 ## Sources
 A complete *Titanic* dataset is available from [https://data.world/nrippner/titanic-disaster-dataset](https://data.world/nrippner/titanic-disaster-dataset). 
 
