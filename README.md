@@ -18,5 +18,8 @@ This will fetch the data, process it and save it to the /data folder, pull a Neo
 ## Sources
 A complete *Titanic* dataset is available from [https://data.world/nrippner/titanic-disaster-dataset](https://data.world/nrippner/titanic-disaster-dataset). 
 
-## Contact
+## Authors
 [Gregory Lindsey](https://github.com/gclindsey) 
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details
