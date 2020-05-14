@@ -92,11 +92,14 @@ target/
 *.pem
 /logs
 source.txt
-
 /references
 /reports
 /docs
 /models
+/scripts
+environment.yml
+requirements.yml
+setup.py
 
 # Elasticsearch
 /es
