@@ -4,7 +4,7 @@ Simple data pipeline for the *RMS Titanic* dataset using Python and Pandas libra
 #### -- Project Status: [Active]
 
 ## Project Description
-The project loads the *RMS Titanic* dataset into Neo4j where relationships between passengers and other entities such as other passengers, lifeboats, cabins, and other data can be visualized, analyzed and explored.
+The pipeline fetches the *RMS Titanic* dataset, cleans, preprocesses it then loads it into a Docker Neo4j instance where relationships between passengers and other entities such as other passengers, lifeboats, cabins, and other data can be visualized, analyzed and explored.
 
 ![Neo4j Browser](/img/neo4jbrowser.png)
 
