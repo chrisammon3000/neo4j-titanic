@@ -15,6 +15,8 @@ make data
 ```
 This will fetch the data, process it and save it to the /data folder, pull a Neo4j Docker image, start the container and load the processed data using the create_db.cyp file.
 
+To explore the database, navigate to the [Neo4j Browser](http://localhost:7474/browser/) and run any Cypher query. 
+
 ## Sources
 A complete *Titanic* dataset is available from [https://data.world/nrippner/titanic-disaster-dataset](https://data.world/nrippner/titanic-disaster-dataset). 
 
