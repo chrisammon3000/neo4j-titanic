@@ -159,6 +159,7 @@ if __name__=='__main__':
 
     print("Reading from: {}".format(url))
     data = pd.read_csv(url)
+    data.to_csv(cwd + '/data/raw/titanic.csv', index=False)
 
     print('Processing...')
     data = clean_data(data)
@@ -166,6 +167,6 @@ if __name__=='__main__':
     data['home.dest'] = remap_abbrev(data['home.dest'])
 
     print('Saving...')
-    data.to_csv(cwd + '/data/interim/titanic_clean.csv', index=False)
+    data.to_csv(cwd + '/data/processed/titanic_clean.csv', index=False)
 
     print('Done.')
