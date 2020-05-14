@@ -86,3 +86,5 @@ WITH p, split(p.home_country, ', ') as countries
 UNWIND countries AS country
 MATCH (c:Country { name: country })
 MERGE (p)-[:TRAVELING_TO]->(c);
+MATCH (l:Lifeboat) // Rename lifeboat labels
+SET l.lifeboat_no = "Lifeboat " + l.lifeboat_no;

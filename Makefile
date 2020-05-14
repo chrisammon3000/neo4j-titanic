@@ -15,8 +15,12 @@ create_env: delete_env
 	&& conda env create -f environment.yml \
 	&& conda deactivate
 
+## Create data directory if not present
+check: 
+	@if [ ! -d "./data" ]; then mkdir -p data/{interim,processed,raw}; fi
+
 ## Fetch, process and save data
-process_data:
+process_data: check
 	@echo "### Begin Pipeline ###"
 	@python src/preprocess.py
 
