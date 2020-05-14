@@ -98,7 +98,7 @@ source.txt
 /models
 /scripts
 environment.yml
-requirements.yml
+requirements.txt
 setup.py
 
 # Elasticsearch
