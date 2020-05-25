@@ -1,7 +1,8 @@
 .PHONY: clean data
 
 SHELL=/bin/bash
-CONDAROOT = /Users/gregory/anaconda3
+CONDAROOT=/Users/gregory/anaconda3
+CONTAINER=neo4j_db
 
 ## Delete Conda environment
 delete_env:
@@ -29,7 +30,7 @@ db: process_data
 	@echo "### Building Neo4j Docker instance... ###"
 	@[[ $$(docker ps -f "name=neo4j_db" --format '{{.Names}}') != "neo4j_db" ]] || docker rm -f neo4j_db
 	@docker build -t neo4j-titanic:neo4j_db ./neo4j && \
-	docker run --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
+	docker run --rm --name neo4j_db -d -p 7474:7474 -p 7473:7473 -p 7687:7687 \
 	-v "$(shell pwd)/data/processed":/var/lib/neo4j/import neo4j-titanic:neo4j_db
 	@echo "### Starting Neo4j... ###"
 	@until $$(curl --output /dev/null --silent --head --fail http://localhost:7474) ; do \

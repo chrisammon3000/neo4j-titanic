@@ -13,9 +13,13 @@ Ensure that the Pandas library and Docker are installed. To run the pipeline, cl
 ```
 make data
 ```
-This will fetch the data, process it and save it to the /data folder, pull a Neo4j Docker image, start the container and load the processed data using the create_db.cyp file.
+This will perform the following steps:
+* Fetch the data from a URL
+* Process it and save it to the ./data folder 
+* Pull a Neo4j Docker image and run it 
+* Load the processed data using the create_db.cyp file
 
-To explore the database, navigate to the [Neo4j Browser](http://localhost:7474/browser/) and run any Cypher query. 
+To explore the database, navigate to the [Neo4j Browser](http://localhost:7474/browser/) and run any Cypher query. For info on using Cypher please visit the [Cypher Basics](https://neo4j.com/developer/cypher-basics-i/) at [Neo4j](https://neo4j.com/).
 
 When finished, ```make clean_up``` will stop Neo4j, remove the container and clean up cache files.
 
