@@ -113,7 +113,7 @@ def explore_value_counts(dataframe, n=None, max_n=1500, columns=None, printed=Tr
         # Data selection
         for column, row in dataframe.iteritems():
             
-            n_unique = dataframe[column].nunique()
+            #n_unique = dataframe[column].nunique()
             
             # Throws error if float64 is removed
             if (dataframe[column].dtype not in ['float64', '<M8[ns]']):
