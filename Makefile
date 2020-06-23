@@ -7,7 +7,7 @@ CONTAINER=neo4j_db
 ## Delete Conda environment
 delete_env:
 	@source $(CONDAROOT)/bin/activate
-	@conda env remove --name neo4j-titanic
+	@conda env remove --name neo4j-titanic-env
 
 ## Create Conda environment
 create_env: delete_env

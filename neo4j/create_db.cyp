@@ -77,7 +77,7 @@ WITH p, p.ticket as ticket
 MATCH (t:Ticket { ticket: ticket })
 MERGE (p)-[:HELD_TICKET]->(t);
 MATCH (p1:Passenger) // RELATED_TO
-WITH p1, p1.surname as surname
+WITH p1, trim(p1.surname) as surname
 MATCH (p2:Passenger { surname: surname })
 WHERE p1.name <> p2.name
 MERGE (p1)<-[:RELATED_TO]->(p2);
