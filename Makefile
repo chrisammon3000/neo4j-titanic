@@ -1,4 +1,4 @@
-.PHONY: clean data
+.PHONY: clean graph
 
 SHELL=/bin/bash
 CONDAROOT=/Users/gregory/anaconda3
@@ -40,7 +40,7 @@ db: process_data
 	@printf "%s\n" " "
 
 ## Run pipeline
-data: db
+graph: db
 	@echo "### Importing data... ###"
 	@cat neo4j/create_db.cyp | docker exec --interactive neo4j_db bin/cypher-shell -u neo4j -p test
 	@printf "Finished!"
